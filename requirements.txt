@@ -1,0 +1,18 @@
+-e git+https://github.com/OpenMDAO/OpenMDAO.git#egg=OpenMDAO
+nose
+
+
+
+
+
+
+####################### EXPLANATION ########################################
+
+This file is to be used to store all of the dependencies for your project. In this case, we have:
+Openmdao and nose. If you guys are using different things, like OpenAeroStruct, then you should add
+them above. 
+
+If you were to add OpenAeroStruct try to follow the same format that is used in installing OpenMDAO. 
+-e git+"OpenAeroStruct url".git#egg=OpenAeroStruct
+
+If this does not work or you're having trouble getting it to work, email me: alivanov@eng.ucsd.edu

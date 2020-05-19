@@ -3,7 +3,7 @@ import numpy as np
 from openmdao.api import ExplicitComponent
 
 
-class CDiComp(ExplicitComponent):
+class PropellerDiameterComp(ExplicitComponent):
 
     def initialize(self):
         self.options.declare('e', types=float)

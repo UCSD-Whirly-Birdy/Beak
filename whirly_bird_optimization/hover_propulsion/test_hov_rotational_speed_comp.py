@@ -1,15 +1,15 @@
 import unittest
 
-from simple_optimization.components.cdi_comp import CDiComp
+from whirly_bird_optimization.hover_propulsion.hov_rotational_speed_comp import HovRotationalSpeedComp
 from openmdao.api import Problem
 from openmdao.utils.assert_utils import assert_check_partials
 
 
-class TestCDiComp(unittest.TestCase):
+class TestHovRotationalSpeedComp(unittest.TestCase):
 
     def test_component_and_derivatives(self):
         prob = Problem()
-        prob.model = CDiComp(e=0.5)
+        prob.model = HovRotationalSpeedComp(e=0.5)
         prob.setup()
         prob.run_model()
 

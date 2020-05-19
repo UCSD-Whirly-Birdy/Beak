@@ -2,10 +2,10 @@ from distutils.core import setup
 
 
 setup(
-    name='simple_optimization',
+    name='whirly_bird_optimization',
     version='1',
     packages=[
-        'simple_optimization',
+        'whirly_bird_optimization',
     ],
     install_requires=[
     ],

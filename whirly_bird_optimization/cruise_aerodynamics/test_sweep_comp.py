@@ -1,15 +1,15 @@
 import unittest
 
-from simple_optimization.components.cl_comp import CLComp
+from whirly_bird_optimization.cruise_aerodynamics.sweep_comp import SweepComp
 from openmdao.api import Problem
 from openmdao.utils.assert_utils import assert_check_partials
 
 
-class TestCLComp(unittest.TestCase):
+class TestSweepComp(unittest.TestCase):
 
     def test_component_and_derivatives(self):
         prob = Problem()
-        prob.model = CLComp()
+        prob.model = SweepComp()
         prob.setup()
         prob.run_model()
 

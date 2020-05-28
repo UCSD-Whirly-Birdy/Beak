@@ -1,0 +1,11 @@
+INFO: checking out_of_order
+WARNING: The following systems are executed out-of-order:
+   System 'cruise_analysis_group.propulsion_group.rotor_group' executes out-of-order with respect to its source systems ['cruise_analysis_group.propulsion_group.motor_group']
+   System 'hover_analysis_group.propulsion_group.rotor_group' executes out-of-order with respect to its source systems ['hover_analysis_group.propulsion_group.motor_group']
+
+INFO: checking system
+INFO: checking solvers
+INFO: checking dup_inputs
+INFO: checking missing_recorders
+WARNING: The Problem has no recorder of any kind attached
+INFO: checking comp_has_no_outputs

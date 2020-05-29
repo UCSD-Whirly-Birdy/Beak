@@ -36,7 +36,7 @@ class PerformanceGroup(Group):
         )
         self.add_subsystem('Range_comp', comp, promotes = ['*'])
 
-        self.connect('inputs_comp.eta', 'cruise_analysis_group.propulsion_group.rotor_group.efficiency_comp')
+        #self.connect('inputs_comp.eta', 'cruise_analysis_group.propulsion_group.rotor_group.efficiency_comp')
         # self.connect('inputs_comp.eta', 'atmosphere_group.altitude')
 
 

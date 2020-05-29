@@ -21,20 +21,22 @@ class PerformanceGroup(Group):
         Wb = self.options['Wb']
 
         comp = IndepVarComp()
-        comp.add_output('eta') # Propellor Efficiency
+        comp.add_output('efficiency') # Propellor Efficiency
         comp.add_output('LD') # Lift to Drag Ratio
-        self.add_subsystem('inputs_comp', comp, promotes=['*'])
+        # self.add_subsystem('inputs_comp', comp, promotes=['*'])
+        self.add_subsystem('inputs_comp', comp)
 
         comp = PowerCombinationComp(
             shape = shape,
             out_name = 'Range',
             coeff = g * EMD * Wb / W0,
             powers_dict = dict(
-                eta = 1.,
+                efficiency = 1.,
                 LD = 1.,
             )
         )
-        self.add_subsystem('Range_comp', comp, promotes = ['*'])
+        # self.add_subsystem('range_comp', comp, promotes = ['*'])
+        self.add_subsystem('range_comp', comp)
 
         #self.connect('inputs_comp.eta', 'cruise_analysis_group.propulsion_group.rotor_group.efficiency_comp')
         # self.connect('inputs_comp.eta', 'atmosphere_group.altitude')

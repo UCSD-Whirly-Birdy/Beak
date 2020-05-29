@@ -15,13 +15,13 @@ prob = Problem()
 
 analysis_group = AnalysisGroup(
     shape = shape,
-    #mode = 'cruise',
+    mode = 'cruise',
 )
 prob.model.add_subsystem('cruise_analysis_group', analysis_group)
 
 analysis_group = AnalysisGroup(
     shape = shape,
- #   mode = 'hover',
+    mode = 'hover',
 )
 prob.model.add_subsystem('hover_analysis_group', analysis_group)
 
@@ -35,6 +35,14 @@ prob.model.add_subsystem('performance_analysis_group', performance_group)
 prob.setup(check=True)
 
 # set indep variables
+
+prob['cruise_analysis_group.inputs_comp.altitude'] = 500.
+prob['hover_analysis_group.inputs_comp.altitude'] = 100.
+
+prob['cruise_analysis_group.inputs_comp.speed'] = 50.
+prob['hover_analysis_group.inputs_comp.speed'] = 1.
+
+
 
 prob.run_model()
 prob.model.list_outputs(prom_name=True)

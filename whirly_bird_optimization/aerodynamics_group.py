@@ -1,23 +1,11 @@
-from openmdao.api import Group, IndepVarComp
-
+from openmdao.api import Group, IndepVarComp, Problem
 from lsdo_utils.api import PowerCombinationComp
-#from lsdo_aircraft.simple_motor.simple_motor import SimpleMotor
-#from lsdo_aircraft.simple_motor.simple_motor_group import SimpleMotorGroup
 
 
 class AerodynamicsGroup(Group):
 
     def initialize(self):
         self.options.declare('shape', types = tuple)
-
-    # def setup(self):
-    #     shape = self.options['shape']
-
-    #     comp = IndepVarComp()
-    #     comp.add_output('C_L')
-    #     comp.add_output('area')
-    #     self.add_subsystem('inputs_comp', comp, promotes=['*'])
-
 
     def setup(self):
         shape = self.options['shape']
@@ -48,6 +36,4 @@ class AerodynamicsGroup(Group):
             )
         )
         self.add_subsystem('wing_chord_comp', comp, promotes=['*'])
-        
-
         

@@ -5,7 +5,9 @@ from openaerostruct.geometry.utils import generate_mesh
 from openaerostruct.geometry.geometry_group import Geometry
 from openaerostruct.aerodynamics.aero_groups import AeroPoint
 
-from cruise_aero_geom import AerodynamicsGeom
+from whirly_bird_optimization.aerodynamics_group import AerodynamicsGroup
+
+# from cruise_aero_geom import AerodynamicsGeom
 
 import numpy as np
 
@@ -23,14 +25,14 @@ indep_var_comp.add_output('alpha', val = 2.)
 
 prob.model.add_subsystem('prob_vars', indep_var_comp, promotes=['*'])
 
-prob.model.add_subsystem('AerodynamicsGroup', AerodynamicsGeom(shape=shape), promotes=['*'])
+prob.model.add_subsystem('AerodynamicsGroup', AerodynamicsGroup(shape=shape), promotes=['*'])
 
 mesh_dict = {'num_y' : 15,
              'num_x' : 7,
              'wing_type' : 'rect',
              'symmetry' : True,
-             'span' : prob['wing_span'],
-             'chord' : prob['wing_chord'],
+             'span' : 1,
+             'chord' : 0.1,
              }
 
 mesh = generate_mesh(mesh_dict)
@@ -77,7 +79,7 @@ prob.model.connect('wing.mesh', 'aero_point_0.wing.def_mesh')
 prob.model.connect('wing.mesh', 'aero_point_0.aero_states.wing_def_mesh')
 # prob.model.connect('wing.t_over_c', 'aero_point_0.wing_perf.t_over_c')
 
-## - - - - - - - - - - - (maybe write another script for optimization and visusalization)
+## - - - - - - - - - - - (maybe write another script for optimization and visualization)
 
 prob.driver = om.ScipyOptimizeDriver()
 
@@ -88,9 +90,8 @@ prob.driver.recording_options['includes'] = ['*']
 
 # # Setup problem and add design variables, constraint, and objective
 prob.model.add_design_var('wing.twist_cp', lower=-20., upper=20.)
-prob.model.add_design_var
 prob.model.add_design_var('wing.sweep', lower=0., upper=50.)
-prob.model.add_design_var('wing.alpha', lower=0., upper=10.)
+# prob.model.add_design_var('wing.alpha', lower=0., upper=10.)
 prob.model.add_constraint('aero_point_0.wing_perf.CL', equals=0.5)
 ## add onstraints and designvaraibles 
 prob.model.add_objective('aero_point_0.wing_perf.CD', scaler=1e4)
@@ -100,8 +101,6 @@ prob.setup()
 
 prob.run_model()
 prob.model.list_outputs(prom_name=True)
-
-print(prob['wing_span'])
 
 print("\nWing CL:", prob['aero_point_0.wing_perf.CL'])
 print("Wing CD:", prob['aero_point_0.wing_perf.CD'])

@@ -20,6 +20,15 @@ class PropulsionGroup(Group):
         # comp.add_output('efficiency')
         # self.add_subsystem('inputs_comp', comp, promotes=['*'])
 
+        simple_motor = SimpleMotor(
+            name='glauert_model',
+        )
+        group = SimpleMotorGroup(
+            shape=shape,
+            options_dictionary=simple_motor,
+        )
+        self.add_subsystem('motor_group', group, promotes=['*'])
+
         simple_rotor = SimpleRotor(
             name='glauert_model',
             integrated_design_lift_coeff=0.3,
@@ -30,14 +39,4 @@ class PropulsionGroup(Group):
             options_dictionary=simple_rotor,
         )
         self.add_subsystem('rotor_group', group, promotes=['*'])
-
-        
-        simple_motor = SimpleMotor(
-            name='glauert_model',
-        )
-        group = SimpleMotorGroup(
-            shape=shape,
-            options_dictionary=simple_motor,
-        )
-        self.add_subsystem('motor_group', group, promotes=['*'])
         

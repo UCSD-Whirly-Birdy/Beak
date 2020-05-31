@@ -16,7 +16,7 @@ class PerformanceGroup(Group):
             shape=shape,
         )
         self.add_subsystem('range_comp',comp)
-
+  
         # group = StabilityGroup(
         #     shape=shape,
         # )

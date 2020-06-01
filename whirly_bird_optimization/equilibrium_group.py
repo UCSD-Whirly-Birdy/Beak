@@ -3,7 +3,7 @@ from openmdao.api import Group, IndepVarComp
 from whirly_bird_optimization.cruise_equilibrium_group import HorizontalCruiseEqGroup, VerticalCruiseEqGroup
 from whirly_bird_optimization.hover_equilibrium_group import TorqueHoverEqGroup, VerticalHoverEqGroup
 
-class StabilityGroup(Group):
+class EquilibriumGroup(Group):
     def initialize(self):
         self.options.declare('shape',types=tuple)
 

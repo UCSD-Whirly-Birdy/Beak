@@ -1,7 +1,9 @@
 from openmdao.api import Group, IndepVarComp
 from lsdo_utils.api import PowerCombinationComp
 
-class CruiseDrag(Group):
+from whirly_bird_optimization.aerodynamics_mesh_group import AerodynamicsMeshGroup
+
+class CruiseDragGroup(Group):
 
     def initialize(self):
         self.options.declare('shape', types=tuple)

@@ -1,45 +1,33 @@
 from openmdao.api import Group, IndepVarComp
 
-from lsdo_utils.api import PowerCombinationComp
+from whirly_bird_optimization.range_comp import RangeGroup
+from whirly_bird_optimization.equilibrium_group import EquilibriumGroup
+# need to import stability portion for static margin
 
 class PerformanceGroup(Group):
 
     def initialize(self):
         self.options.declare('shape', types = tuple)
-        self.options.declare('g', default = 1.)
-        self.options.declare('EMD', default = 1.)
-        self.options.declare('W0', default = 1.)
-        self.options.declare('Wb', default = 1.)
-
 
     def setup(self):
-
         shape = self.options['shape']
-        g = self.options['g']
-        EMD = self.options['EMD']
-        W0 = self.options['W0']
-        Wb = self.options['Wb']
 
         comp = IndepVarComp()
-        comp.add_output('efficiency') # Propellor Efficiency
-        comp.add_output('LD') # Lift to Drag Ratio
-        # self.add_subsystem('inputs_comp', comp, promotes=['*'])
-        self.add_subsystem('inputs_comp', comp)
-
-        comp = PowerCombinationComp(
-            shape = shape,
-            out_name = 'Range',
-            coeff = g * EMD * Wb / W0,
-            powers_dict = dict(
-                efficiency = 1.,
-                LD = 1.,
-            )
+        comp.add_output('weight') # weight
+        self.add_subsystem('inputs_comp',comp,promotes=['*'])
+  
+        group = EquilibriumGroup(
+            shape=shape,
         )
-        # self.add_subsystem('range_comp', comp, promotes = ['*'])
-        self.add_subsystem('range_comp', comp)
+        self.add_subsystem('equilibrium_group',group, promotes = ['*'])
 
-        #self.connect('inputs_comp.eta', 'cruise_analysis_group.propulsion_group.rotor_group.efficiency_comp')
-        # self.connect('inputs_comp.eta', 'atmosphere_group.altitude')
+        group = RangeGroup(
+            shape=shape,
+        )
+        self.add_subsystem('range_group',group, promotes = ['*'])
+        
 
-
-
+        # self.connect('cruise_analysis_group.propulsion_group.rotor_group.efficiency_comp.efficiency','efficiency')
+        # self.connect('efficiency_comp.efficiency','efficiency')
+        self.connect('weight', 'vertical_cruise_group.weight')
+        self.connect('weight', 'vertical_hover_group.weight')

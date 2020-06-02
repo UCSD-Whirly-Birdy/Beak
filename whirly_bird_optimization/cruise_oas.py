@@ -91,8 +91,7 @@ prob.model.connect('oas_wing_chord', 'wing.mesh.scale_x.chord')
 # prob.model.add_design_var('wing.twist_cp', lower=-20., upper=20.)
 # prob.model.add_design_var('wing.sweep', lower=0., upper=50.)
 # prob.model.add_design_var('wing.alpha', lower=0., upper=10.)
-# prob.model.add_constraint('laura
-#.wing_perf.CL', equals=0.5)
+# prob.model.add_constraint('laura.wing_perf.CL', equals=0.5)
 # ## add onstraints and designvaraibles 
 # prob.model.add_objective('laura
 #.wing_perf.CD', scaler=1e4)

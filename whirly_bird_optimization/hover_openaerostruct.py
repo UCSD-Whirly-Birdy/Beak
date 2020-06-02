@@ -1,6 +1,8 @@
 # this file imports the optimized geometry and velocity tangential to the wing
 # in hover to determine the lift and drag coefficients
 
+# need to fix prob for geometry inputs bc prob doesn't work
+
 import numpy as np
 import openmdao.api as om
 
@@ -8,7 +10,7 @@ from openaerostruct.geometry.utils import generate_mesh
 from openaerostruct.geometry.geometry_group import Geometry
 from openaerostruct.aerodynamics.aero_groups import AeroPoint
 
-from openaerostruct_wb import prob
+# from openaerostruct_wb import prob
 # from cruise_aero_geom import AerodynamicsGeom
 from hover_aero_geom import HoverAeroVelocity
 
@@ -17,14 +19,13 @@ from hover_aero_geom import HoverAeroVelocity
 # cruise aero computation where the velocity is equal to (2pi)/60*RPM*.75r (averaged 
 # or centroid drag value in parabolic shape)
 
-import numpy as np
-
 shape = (1,)
 
 prob = om.Problem()
 
 indep_var_comp = om.IndepVarComp()
-indep_var_comp.add_output('v', val=prob['hover_inflow_velocity'], units='m/s') # update velocity value
+# indep_var_comp.add_output('v', val=self.setup['hover_inflow_velocity'], units='m/s') # update velocity value
+indep_var_comp.add_output('v', val=50, units='m/s')
 indep_var_comp.add_output('Mach_number', val=0.3)
 indep_var_comp.add_output('re', val=1.e6, units='1/m')
 indep_var_comp.add_output('rho', val=1.225, units='kg/m**3')

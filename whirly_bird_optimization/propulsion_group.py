@@ -1,4 +1,4 @@
-from openmdao.api import Group, IndepVarComp
+from openmdao.api import Group, IndepVarComp, Problem
 
 from lsdo_utils.api import PowerCombinationComp
 from lsdo_aircraft.simple_rotor.simple_rotor import SimpleRotor

@@ -33,8 +33,3 @@ from openaerostruct_wb import prob
 #         comp.add_output('c')
 #         comp.add_output('lambda')
 #         comp.add_output('s')
-
-
-
-
-print("Wing CD:", prob['aero_point_0.wing_perf.CD'])

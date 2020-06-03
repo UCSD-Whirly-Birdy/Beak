@@ -8,10 +8,13 @@ class AerodynamicsGeomGroup(Group):
 
     def initialize(self):
         self.options.declare('shape', types = tuple)
+        self.options.declare('mode', types = str)
+
 
     def setup(self):
         shape = self.options['shape']
-        
+        # mode = self.options['mode']
+
         comp = IndepVarComp()
         comp.add_output('area')
         comp.add_output('AR')

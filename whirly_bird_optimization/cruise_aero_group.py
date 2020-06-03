@@ -7,7 +7,7 @@ from openaerostruct.geometry.utils import generate_mesh, scale_x
 from openaerostruct.geometry.geometry_group import Geometry
 from openaerostruct.aerodynamics.aero_groups import AeroPoint
 
-from aerodynamics_geom_group import AerodynamicsGeomGroup
+from .aerodynamics_geom_group import AerodynamicsGeomGroup
 
 prob = om.Problem()
 

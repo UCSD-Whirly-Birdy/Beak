@@ -45,10 +45,8 @@ prob['hover_analysis_group.inputs_comp.altitude'] = 100.
 prob['cruise_analysis_group.inputs_comp.speed'] = 50.
 prob['hover_analysis_group.inputs_comp.speed'] = 1.
 
-<<<<<<< HEAD
 prob['cruise_analysis_group.propulsion_group.rotor_group.inputs_comp.radius_scalar'] = 0.127
 
-=======
 prob.run_model()
 prob.model.list_inputs(prom_name=True)
 prob.model.list_outputs(prom_name=True)
@@ -72,9 +70,9 @@ prob.model.add_design_var('alpha', lower=0., upper=10.)
 prob.model.add_design_var('power_coefficient', lower=0., upper=0.8)
 prob.model.add_design_var('propeller_diameter', lower=0.1, upper=1.2)
 prob.model.add_design_var('propeller_RPM', lower=0., upper=28860)
-prob.model.add_design_var('hover RPM', lower=400., upper=600.)
-# prob.model.add_design_var('RP', lower=0., upper=chord length) need design variable where reference point 
-# can move with each iteration within cruise OAS
+prob.model.add_design_var('hover_RPM', lower=400., upper=600.)
+prob.model.add_design_var('ref_point', lower=0.,upper=prob['wing_span']/2*np.tan(prob['sweep']*np.pi/180) + prob['chord']) 
+# need to set upper limit of ref_point as c + b/2*tan(sweep*pi/180)
 
 prob.model.add_constraint('L_W', equals=0.)
 prob.model.add_constraint('T_D', equals=0.)
@@ -105,7 +103,6 @@ prob.model.add_objective('range', scaler=1e4)
 # prob.model.add_constraint('laura.wing_perf.CL', equals=0.5)
 # ## add constraints and design varaibles 
 # prob.model.add_objective('laura.wing_perf.CD', scaler=1e4)
->>>>>>> 65df607769c7eb8f1e1af5e9a4f333bb1899ee82
 
 # Set up the problem
 prob.setup()

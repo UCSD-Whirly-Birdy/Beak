@@ -30,5 +30,5 @@ class PerformanceGroup(Group):
 
         # self.connect('cruise_analysis_group.propulsion_group.rotor_group.efficiency_comp.efficiency','efficiency')
         # self.connect('efficiency_comp.efficiency','efficiency')
-        self.connect('weight', 'vertical_cruise_group.weight')
-        self.connect('weight', 'vertical_hover_group.weight')
+        #self.connect('weight', 'vertical_cruise_group.weight')
+        #self.connect('weight', 'vertical_hover_group.weight')

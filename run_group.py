@@ -31,6 +31,7 @@ performance_group = PerformanceGroup(
 )
 prob.model.add_subsystem('performance_analysis_group', performance_group)
 prob.model.connect('cruise_analysis_group.propulsion_group.efficiency','performance_analysis_group.efficiency')
+#prob.model.connect('cruise_analysis_group.propulsion_group.thrust','performance_analysis_group.horizontal_cruise_group.thrust_cruise')
 
 
 
@@ -43,6 +44,8 @@ prob['hover_analysis_group.inputs_comp.altitude'] = 100.
 
 prob['cruise_analysis_group.inputs_comp.speed'] = 50.
 prob['hover_analysis_group.inputs_comp.speed'] = 1.
+
+prob['cruise_analysis_group.propulsion_group.rotor_group.inputs_comp.radius_scalar'] = 0.127
 
 
 prob.run_model()

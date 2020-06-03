@@ -33,6 +33,7 @@ prob.model.add_subsystem('performance_analysis_group', performance_group)
 prob.model.connect('cruise_analysis_group.propulsion_group.efficiency','performance_analysis_group.efficiency')
 
 
+
 prob.setup(check=True)
 
 # set indep variables

@@ -49,3 +49,4 @@ class AnalysisGroup(Group):
         self.connect('atmosphere_group.sonic_speed', 'propulsion_group.sonic_speed')
         self.connect('atmosphere_group.density', 'propulsion_group.density')
 
+

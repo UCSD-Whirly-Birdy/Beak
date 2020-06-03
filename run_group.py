@@ -21,7 +21,6 @@ prob.model.add_subsystem('cruise_analysis_group', analysis_group)
 analysis_group = AnalysisGroup(
     shape = shape,
     mode = 'hover',
-
 )
 prob.model.add_subsystem('hover_analysis_group', analysis_group)
 
@@ -50,6 +49,7 @@ prob.model.list_inputs(prom_name=True)
 prob.model.list_outputs(prom_name=True)
 
 # set up optimization problem
+
 
 prob.driver = om.ScipyOptimizeDriver()
 

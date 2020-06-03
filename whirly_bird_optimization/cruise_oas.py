@@ -95,20 +95,13 @@ prob.model.add_constraint('aero_point_0.wing_perf.CL', equals=0.5)
 ## add onstraints and designvaraibles 
 prob.model.add_objective('aero_point_0.wing_perf.CD', scaler=1e4)
 
+
+
 # Set up the problem
 prob.setup()
 
 prob.run_model()
-prob.model.list_outputs(prom_name=True)
 
-print(prob['wing_span'])
-
-print("\nWing CL:", prob['aero_point_0.wing_perf.CL'])
-print("Wing CD:", prob['aero_point_0.wing_perf.CD'])
-print("Wing Sweep:", prob['wing.sweep'])
-# print("Wing Alpha:", prob['aero_point_0.alpha'])
-print("Wing Twist Cp:", prob['wing.twist_cp'])
-print("CoG:", prob['aero_point_0.cg'])
 
 # plot_wing aero_wb.db to plot wing over iterations
 # plot_wingbox aero_wb.db of CS of airfoil (but produces error, yet to fix)

@@ -1,15 +1,20 @@
-from openmdao.api import Group, IndepVarComp
-from lsdo_utils.api import PowerCombinationComp
+from openmdao.api import Group, IndepVarComp, Problem
+from lsdo_utils.api import PowerCombinationComp, ScalarExpansionComp
+
+import numpy as np
 
 
-class AerodynamicsGeom(Group):
+class AerodynamicsGeomGroup(Group):
 
     def initialize(self):
-        self.options.declare('shape', types=tuple)
+        self.options.declare('shape', types = tuple)
+        self.options.declare('mode', types = str)
+
 
     def setup(self):
         shape = self.options['shape']
-        
+        # mode = self.options['mode']
+
         comp = IndepVarComp()
         comp.add_output('area')
         comp.add_output('AR')
@@ -27,6 +32,7 @@ class AerodynamicsGeom(Group):
         self.add_subsystem('wing_span_comp', comp, promotes=['*'])
 
         # c = b / AR
+        oas_shape = (9,)
         comp = PowerCombinationComp(
             shape=shape,
             out_name='wing_chord',
@@ -36,3 +42,10 @@ class AerodynamicsGeom(Group):
             )
         )
         self.add_subsystem('wing_chord_comp', comp, promotes=['*'])
+
+        comp = ScalarExpansionComp(
+            shape=oas_shape,
+            out_name='oas_wing_chord',
+            in_name='wing_chord',
+        )
+        self.add_subsystem('oas_wing_chord_comp', comp, promotes=['*'])

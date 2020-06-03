@@ -1,4 +1,4 @@
-from openmdao.api import Group, IndepVarComp
+from openmdao.api import Group, IndepVarComp, Problem
 
 from whirly_bird_optimization.range_comp import RangeGroup
 from whirly_bird_optimization.equilibrium_group import EquilibriumGroup
@@ -13,6 +13,7 @@ class PerformanceGroup(Group):
         shape = self.options['shape']
 
         comp = IndepVarComp()
+
         comp.add_output('weight') # weight
         self.add_subsystem('inputs_comp',comp,promotes=['*'])
   

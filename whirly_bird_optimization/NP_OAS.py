@@ -25,16 +25,21 @@ class CruiseAeroGroup(Group):
         indep_var_comp.add_output('Mach_number', val=0.3)
         indep_var_comp.add_output('re', val=1.e6, units='1/m')
         indep_var_comp.add_output('rho', val=1.225, units='kg/m**3')
-        indep_var_comp.add_output('cg', val=np.array([RP, 0., 0.]), units='m') # import group with design variable RP
-        indep_var_comp.add_output('alpha', val = 2.)
-        # indep_var_comp.add_output('alpha2', val = 2.001)
+        indep_var_comp.add_output('cg', val=np.zeros((3)), units='m')
+        # indep_var_comp.add_output('cg', val=np.array([RP, 0., 0.]), units='m') # import group with design variable 'ref_point'
+        indep_var_comp.add_output('alpha1', val = 2.)
+        indep_var_comp.add_output('alpha2', val = 2. + .001)
 
         # prob.model.add_subsystem('ivc', indep_var_comp, promotes=['*'])
         prob.model.add_subsystem('ivc', indep_var_comp) # don't want to promote since we have two alphas and velocities
 
         shape = (1,)
-        prob.model.add_subsystem('AerodynamicsGeomGroup', AerodynamicsGeomGroup(shape=shape), promotes=['*'])
-        prob.model.add_subsystem('HoverAeroVelocity', HoverAeroVelocity(shape=shape), promotes=['*'])
+        prob.model.add_subsystem('AerodynamicsGeomGroup1', AerodynamicsGeomGroup(shape=shape))
+        prob.model.add_subsystem('AerodynamicsGeomGroup2', AerodynamicsGeomGroup(shape=shape))
+
+        prob.model.connect('alpha1','AerodynamicsGeomGroup1')
+        prob.model.connect('alpha2','AerodynamicsGeomGroup2')
+
 
         mesh_dict = {'num_y' : 17,
                     'num_x' : 9,

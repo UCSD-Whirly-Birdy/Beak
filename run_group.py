@@ -31,10 +31,12 @@ performance_group = PerformanceGroup(
 prob.model.add_subsystem('performance_analysis_group', performance_group)
 
 prob.model.connect('cruise_analysis_group.propulsion_group.efficiency','performance_analysis_group.efficiency')
+
 # prob.model.connect('cruise_analysis_group.propulsion_group.thrust','performance_analysis_group.horizontal_cruise_group.thrust_cruise')
 prob.model.connect('cruise_analysis_group.aerodynamics_group.L_D', 'performance_analysis_group.L_D')
 
 prob.setup()
+
 
 # set indep variables
 
@@ -53,6 +55,7 @@ prob.model.list_inputs(prom_name=True)
 # set up optimization problem
 
 
+
 # prob.driver = om.ScipyOptimizeDriver()
 
 # recorder = om.SqliteRecorder("aero_wb.db")
@@ -69,9 +72,9 @@ prob.model.list_inputs(prom_name=True)
 # prob.model.add_design_var('power_coefficient', lower=0., upper=0.8)
 # prob.model.add_design_var('propeller_diameter', lower=0.1, upper=1.2)
 # prob.model.add_design_var('propeller_RPM', lower=0., upper=28860)
-# prob.model.add_design_var('hover RPM', lower=400., upper=600.)
-# # prob.model.add_design_var('RP', lower=0., upper=chord length) need design variable where reference point 
-# # can move with each iteration within cruise OAS
+# prob.model.add_design_var('hover_RPM', lower=400., upper=600.)
+# prob.model.add_design_var('ref_point', lower=0.,upper=prob['wing_span']/2*np.tan(prob['sweep']*np.pi/180) + prob['chord']) 
+# # need to set upper limit of ref_point as c + b/2*tan(sweep*pi/180)
 
 # ## set RP as design variable
 # # set RP whre  CM0 - CM1 = 0

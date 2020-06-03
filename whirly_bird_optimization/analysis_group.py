@@ -10,6 +10,7 @@ from propulsion_group import PropulsionGroup
 class AnalysisGroup(Group):
     def initialize(self):
         self.options.declare('shape', types = tuple)
+        self.options.declare('mode', types = str)
 
     def setup(self):
         shape = self.options['shape']
@@ -23,7 +24,7 @@ class AnalysisGroup(Group):
         group = AtmosphereGroup(
             shape=shape,
             options_dictionary=Atmosphere,
-            #mode=mode,
+            # mode=mode,
         )
         self.add_subsystem('atmosphere_group', group)
 
@@ -48,3 +49,5 @@ class AnalysisGroup(Group):
         self.connect('inputs_comp.speed', 'propulsion_group.speed')
         self.connect('atmosphere_group.sonic_speed', 'propulsion_group.sonic_speed')
         self.connect('atmosphere_group.density', 'propulsion_group.density')
+       # self.connect('cruise_analysis_group.propulsion_group.radius_scalar', 'cruise_analysis_group.propulsion_group.rotor_group.radius_comp.radius_scalar')
+

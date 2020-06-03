@@ -13,20 +13,19 @@ class EquilibriumGroup(Group):
         group = HorizontalCruiseEqGroup(
             shape=shape
         )
-        self.add_subsystem('horizontal_cruise_group',group)
+        self.add_subsystem('horizontal_cruise_group', group, promotes=['*'])
 
         group = VerticalCruiseEqGroup(
             shape=shape
         )
-        self.add_subsystem('vertical_cruise_group',group)
+        self.add_subsystem('vertical_cruise_group', group, promotes=['*'])
 
         group = TorqueHoverEqGroup(
             shape=shape
         )
-        self.add_subsystem('torque_hover_group',group)
+        self.add_subsystem('torque_hover_group', group, promotes=['*'])
 
         group = VerticalHoverEqGroup(
             shape=shape
         )
-        self.add_subsystem('vertical_hover_group',group)
-
+        self.add_subsystem('vertical_hover_group', group, promotes=['*'])

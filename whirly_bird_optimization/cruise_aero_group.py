@@ -81,3 +81,5 @@ class CruiseAeroGroup(Group):
 
         prob.model.connect('wing_span', 'wing.mesh.stretch.span')
         prob.model.connect('oas_wing_chord', 'wing.mesh.scale_x.chord')
+
+        prob.model.list_outputs(prom_name=True)

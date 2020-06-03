@@ -76,6 +76,9 @@ prob.model.add_design_var('hover RPM', lower=400., upper=600.)
 # prob.model.add_design_var('RP', lower=0., upper=chord length) need design variable where reference point 
 # can move with each iteration within cruise OAS
 
+## set RP as design variable
+# set RP whre  CM0 - CM1 = 0
+
 prob.model.add_constraint('L_W', equals=0.)
 prob.model.add_constraint('T_D', equals=0.)
 prob.model.add_constraint('NP_CG', lower= 0.)

@@ -13,8 +13,8 @@ class AerodynamicsGeomGroup(Group):
         shape = self.options['shape']
         
         comp = IndepVarComp()
-        comp.add_output('area', val=3)
-        comp.add_output('AR', val=10)
+        comp.add_output('area')
+        comp.add_output('AR')
         self.add_subsystem('inputs_comp', comp, promotes=['*'])
 
         # b = sqrt(AR * S)

@@ -1,7 +1,7 @@
 from openmdao.api import Group, IndepVarComp
 from lsdo_utils.api import LinearCombinationComp
 
-from whirly_bird_optimization.cruise_equilibrium_group import HorizontalCruiseEqGroup, VerticalCruiseEqGroup
+# from whirly_bird_optimization.cruise_equilibrium_group import HorizontalCruiseEqGroup, VerticalCruiseEqGroup
 from whirly_bird_optimization.hover_equilibrium_group import TorqueHoverEqGroup, VerticalHoverEqGroup
 
 class EquilibriumGroup(Group):
@@ -36,12 +36,6 @@ class EquilibriumGroup(Group):
             coeffs = [1., -1.],
         )
         self.add_subsystem('vertical_cruise_comp',comp, promotes = ['*'])
-        self.add_subsystem('horizontal_cruise_group', group, promotes=['*'])
-
-        group = VerticalCruiseEqGroup(
-            shape=shape
-        )
-        self.add_subsystem('vertical_cruise_group', group, promotes=['*'])
 
         group = TorqueHoverEqGroup(
             shape=shape

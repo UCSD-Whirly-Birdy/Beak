@@ -5,6 +5,7 @@ from openmdao.api import Problem, Group, IndepVarComp
 
 from whirly_bird_optimization.analysis_group import AnalysisGroup
 from whirly_bird_optimization.performance_group import PerformanceGroup
+from whirly_bird_optimization.equilibrium_group import EquilibriumGroup
 
 n = 1
 shape = (n,n)
@@ -32,8 +33,7 @@ prob.model.add_subsystem('performance_analysis_group', performance_group)
 
 prob.model.connect('cruise_analysis_group.propulsion_group.efficiency','performance_analysis_group.efficiency')
 #prob.model.connect('cruise_analysis_group.propulsion_group.thrust','performance_analysis_group.horizontal_cruise_group.thrust_cruise')
-
-
+prob.model.connect('cruise_analysis_group.aerodynamics_group.L_D', 'performance_analysis_group.L_D')
 
 prob.setup(check=True)
 

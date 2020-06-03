@@ -97,10 +97,15 @@ prob.model.connect('oas_wing_chord', 'wing.mesh.scale_x.chord')
 # prob.model.add_objective('laura
 #.wing_perf.CD', scaler=1e4)
 
+
+
 # Set up the problem
 prob.setup()
 prob.run_model()
-prob.model.list_inputs(prom_name=True)
+# prob.model.list_inputs(prom_name=True)
+prob.model.list_outputs(prom_name=True)
+
+print("\nWing CM:", prob['laura.CM'])
 
 # print("\nWing CL:", prob['laura
 #.wing_perf.CL'])

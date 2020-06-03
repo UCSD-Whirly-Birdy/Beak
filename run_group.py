@@ -67,6 +67,9 @@ prob.model.add_design_var('alpha', lower=0., upper=10.)
 prob.model.add_design_var('power_coefficient', lower=0., upper=0.8)
 prob.model.add_design_var('propeller_diameter', lower=0.1, upper=1.2)
 prob.model.add_design_var('propeller_RPM', lower=0., upper=28860)
+prob.model.add_design_var('hover RPM', lower=400., upper=600.)
+# prob.model.add_design_var('RP', lower=0., upper=chord length) need design variable where reference point 
+# can move with each iteration within cruise OAS
 
 prob.model.add_constraint('L_W', equals=0.)
 prob.model.add_constraint('T_D', equals=0.)

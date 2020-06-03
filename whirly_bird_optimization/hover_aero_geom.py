@@ -6,12 +6,12 @@ class HoverAeroVelocity(Group):
 
     def initialize(self):
         self.options.declare('shape', types=tuple)
-        self.options.declare('b', default = 9.81)
-        self.options.declare('sweep', default = 1.)
+        # self.options.declare('b', default = 9.81)
+        # self.options.declare('sweep', default = 1.)
 
     def setup(self):
         shape = self.options['shape']
-        b = self.options['b']
+        b = self.options['wing_span']
         sweep = self.options['sweep']
 
         # V = 2pi*RPM/60*.75r where r = b/(cos(sweep))

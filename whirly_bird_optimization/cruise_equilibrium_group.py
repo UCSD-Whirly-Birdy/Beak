@@ -7,8 +7,8 @@ class HorizontalCruiseEqGroup(Group):
 
     def initialize(self):
         self.options.declare('shape', types = tuple)
-        self.options.declare('thrust_cruise') # update variable name later
-        self.options.declare('drag_cruise') # update variable name later
+        #self.options.declare('thrust_cruise') # update variable name later
+        #self.options.declare('drag_cruise') # update variable name later
 
     def setup(self):
         shape = self.options['shape']

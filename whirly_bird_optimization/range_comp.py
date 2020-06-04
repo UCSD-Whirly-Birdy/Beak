@@ -32,7 +32,7 @@ class RangeGroup(Group):
             coeff = EMD / g * Wb / W0,
             powers_dict = dict(
                 efficiency = 1.,
-                LD = 1.,
+                L_D = 1.,
             )
         )
         self.add_subsystem('range_comp', comp, promotes = ['*'])

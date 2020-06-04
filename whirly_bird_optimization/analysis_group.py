@@ -3,8 +3,8 @@ from openmdao.api import Group, IndepVarComp
 from lsdo_aircraft.atmosphere.atmosphere import Atmosphere
 from lsdo_aircraft.atmosphere.atmosphere_group import AtmosphereGroup
 
-from whirly_bird_optimization.aerodynamics_geom_group import AerodynamicsGeomGroup
-from whirly_bird_optimization.propulsion_group import PropulsionGroup
+from .aerodynamics_group import AerodynamicsGroup
+from .propulsion_group import PropulsionGroup
 
 
 class AnalysisGroup(Group):
@@ -14,7 +14,7 @@ class AnalysisGroup(Group):
 
     def setup(self):
         shape = self.options['shape']
-        mode = self.options['mode']
+        # mode = self.options['mode']
 
         comp = IndepVarComp()
         comp.add_output('altitude')
@@ -28,10 +28,10 @@ class AnalysisGroup(Group):
         )
         self.add_subsystem('atmosphere_group', group)
 
-        group = AerodynamicsGeomGroup(
+        group = AerodynamicsGroup(
             shape=shape,
-            mode=mode,
-        )
+            # mode=mode,
+       )
         self.add_subsystem('aerodynamics_group', group)
 
         group = PropulsionGroup(

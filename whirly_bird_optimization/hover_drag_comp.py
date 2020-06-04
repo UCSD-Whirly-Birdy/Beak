@@ -9,7 +9,7 @@ from openmdao.api import Group, IndepVarComp
 # from lsdo_utils.api import PowerCombinationComp
 
 # from openaerostruct_wb.py import prob['aero_point_0.wing_perf.CD']
-from openaerostruct_wb import prob
+# from openaerostruct_wb import prob
 
 
 
@@ -33,8 +33,3 @@ from openaerostruct_wb import prob
 #         comp.add_output('c')
 #         comp.add_output('lambda')
 #         comp.add_output('s')
-
-
-
-
-print("Wing CD:", prob['aero_point_0.wing_perf.CD'])

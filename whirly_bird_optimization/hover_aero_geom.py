@@ -1,22 +1,26 @@
-from openmdao.api import Group, IndepVarComp, ExplicitComponent
+from openmdao.api import Group, IndepVarComp, ExplicitComponent, ExecComp
 from lsdo_utils.api import PowerCombinationComp
 import numpy as np
 
-# r = b/(cos(sweep))
-class HoverRadiusComp(ExplicitComponent):
-    def setup(self):
-        self.add_input('wing_span')
-        self.add_input('sweep')
-        self.add_output('radius')
+# class HoverRadiusComp(ExplicitComponent):
 
-        self.declare_partials('*','*')
+#     def initialize(self):
+#         self.options.declare('shape', types=tuple)
 
-    def compute(self, inputs, outputs):
-        outputs['radius'] = inputs['wing_span']/(2.*np.cos(inputs['sweep']*np.pi/180))
+#     def setup(self):
+#         self.add_input('wing_span')
+#         self.add_input('sweep')
+#         self.add_output('radius')
 
-    def compute_partials(self, inputs, partials):
-        partials['radius','wing_span'] = 1./(2.*np.cos(inputs['sweep']*np.pi/180))
-        partials['radius','sweep'] = np.pi*inputs['wing_span']/360.*np.sin(np.pi/180.*inputs['sweep'])/(np.cos(np.pi/180.*inputs['sweep']))**2
+#         self.declare_partials('*','*')
+
+#     def compute(self, inputs, outputs):
+#         outputs['radius'] = inputs['wing_span']/(2.*np.cos(inputs['sweep']*np.pi/180))
+
+#     def compute_partials(self, inputs, partials):
+#         partials['radius','wing_span'] = 1./(2.*np.cos(inputs['sweep']*np.pi/180))
+#         partials['radius','sweep'] = np.pi*inputs['wing_span']/360.*np.sin(np.pi/180.*inputs['sweep'])/(np.cos(np.pi/180.*inputs['sweep']))**2
+
 
 class HoverAeroVelocity(Group):
 
@@ -28,10 +32,17 @@ class HoverAeroVelocity(Group):
 
         comp = IndepVarComp()
         comp.add_output('hover_RPM')
-        comp.add_output('radius')
         self.add_subsystem('inputs_comp', comp, promotes = ['*'])
+        
+        # r = b/2/(cos(sweep))
+        comp = ExecComp('radius = wing_span/2/(np.cos(sweep*np.pi/180))',shape=shape)
+        self.add_subsystem('radius_comp', comp, promotes = ['*'])
 
-        # V = 2pi*RPM/60*.75*radius 
+        # ExecComp defines the equation and calculates given the equation/inputs 
+        # Need to connect sweep/wingspan to this Group and then can compute the 
+        # hover velocity below
+
+        # V = 2pi*RPM/60*.75*radius or V = 2pi*RPM/60*.75* b/2/(cos(sweep))
 
         comp = PowerCombinationComp(
             shape=shape,

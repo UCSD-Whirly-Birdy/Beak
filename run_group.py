@@ -45,10 +45,8 @@ prob['hover_analysis_group.inputs_comp.altitude'] = 100.
 prob['cruise_analysis_group.inputs_comp.speed'] = 50.
 prob['hover_analysis_group.inputs_comp.speed'] = 1.
 
-<<<<<<< HEAD
 prob['cruise_analysis_group.propulsion_group.rotor_group.inputs_comp.radius_scalar'] = 0.127
 
-=======
 prob.run_model()
 prob.model.list_inputs(prom_name=True)
 prob.model.list_outputs(prom_name=True)
@@ -102,7 +100,6 @@ prob.model.add_objective('range', scaler=1e4)
 # prob.model.add_constraint('laura.wing_perf.CL', equals=0.5)
 # ## add constraints and design varaibles 
 # prob.model.add_objective('laura.wing_perf.CD', scaler=1e4)
->>>>>>> 65df607769c7eb8f1e1af5e9a4f333bb1899ee82
 
 # Set up the problem
 prob.setup()

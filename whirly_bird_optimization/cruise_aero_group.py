@@ -1,83 +1,102 @@
 import numpy as np
 import openmdao.api as om
 
-from openmdao.api import Group
+from openmdao.api import Group, ExplicitComponent
 
 from openaerostruct.geometry.utils import generate_mesh, scale_x
 from openaerostruct.geometry.geometry_group import Geometry
 from openaerostruct.aerodynamics.aero_groups import AeroPoint
 
-from .aerodynamics_geom_group import AerodynamicsGeomGroup
+from aerodynamics_geom_group import AerodynamicsGeomGroup
 
-prob = om.Problem()
-
-# class CruiseAeroGroup(Group):
-#     def initialize(self):
-#         self.options.declare('shape', types=tuple)
-
-#     def setup(self):
-#         shape = self.options['shape']
-        
-indep_var_comp = om.IndepVarComp()
-indep_var_comp.add_output('v', val=50, units='m/s')
-indep_var_comp.add_output('Mach_number', val=0.3)
-indep_var_comp.add_output('re', val=1.e6, units='1/m')
-indep_var_comp.add_output('rho', val=1.225, units='kg/m**3')
-indep_var_comp.add_output('cg', val=np.zeros((3)), units='m')
-indep_var_comp.add_output('alpha', val = 2.)
-
-prob.model.add_subsystem('ivc', indep_var_comp, promotes=['*'])
+# prob = om.Problem()
 shape = (1,)
-prob.model.add_subsystem('AerodynamicsGeomGroup', AerodynamicsGeomGroup(shape=shape), promotes=['*'])
 
-mesh_dict = {'num_y' : 17,
-            'num_x' : 9,
-            'wing_type' : 'rect',
-            'symmetry' : True,
-            'chord': 0.1,
-            'span' : 1.,
-            }
+class CruiseAeroGroup(Group):
+    def initialize(self):
+        self.options.declare('shape', types=tuple)
 
-mesh = generate_mesh(mesh_dict)
+    def setup(self):
 
-surface = { 'name' : 'wing', 
-            'symmetry' : True,
-            'S_ref_type' : 'wetted',
-            'twist_cp' : np.zeros(3),
-            'mesh' : mesh,
-            'CL0' : 0.0,
-            'CD0' : 0.001,
-            'k_lam' : 0.05,
-            't_over_c_cp' : np.array([0.1875]),
-            'c_max_t' : 0.1,
-            'with_viscous' : True,
-            'with_wave' : False,
-            'sweep' : 0.,
-            'alpha' : 0.,
-            }
+        # self.add_output('CL', val=1.)
+        # self.add_output('CD', val=1.)
+        # self.add_output('laura.CM', val=1.)
+        # self.add_output('wing.sweep', val=30.)
+        # self.add_output('wing.twist_cp', val=5.)
 
-geom_group = Geometry(surface=surface)
+        # self.add_input('wing_span', val=10)
+        # self.add_input('wing_chord', val=1.)
 
-prob.model.add_subsystem(surface['name'], geom_group)
+        shape = self.options['shape']
+        
+        indep_var_comp = om.IndepVarComp()
+        indep_var_comp.add_output('v', val=50, units='m/s')
+        indep_var_comp.add_output('Mach_number', val=0.3)
+        indep_var_comp.add_output('re', val=1.e6, units='1/m')
+        indep_var_comp.add_output('rho', val=1.225, units='kg/m**3')
+        indep_var_comp.add_output('cg', val=np.zeros((3)), units='m')
+        indep_var_comp.add_output('alpha', val = 2.)
 
-aero_group = AeroPoint(surfaces=[surface])
-point_name = 'laura'
-prob.model.add_subsystem(point_name, aero_group)
+        self.add_subsystem('ivc', indep_var_comp, promotes=['*'])
+        self.add_subsystem('AerodynamicsGeomGroup', AerodynamicsGeomGroup(shape=shape), promotes=['*'])
 
-# Connect flow properties to the analysis point
-prob.model.connect('v', point_name + '.v')
-prob.model.connect('alpha', point_name + '.alpha')
-prob.model.connect('Mach_number', point_name + '.Mach_number')
-prob.model.connect('re', point_name + '.re')
-prob.model.connect('rho', point_name + '.rho')
-prob.model.connect('cg', point_name + '.cg')
+        mesh_dict = {'num_y' : 17,
+                    'num_x' : 9,
+                    'wing_type' : 'rect',
+                    'symmetry' : True,
+                    'chord': 1,
+                    'span' : 0.1,
+                    }
 
-# Connect the mesh from the geometry component to the analysis point
-prob.model.connect('wing.mesh', 'laura.wing.def_mesh')
+        mesh = generate_mesh(mesh_dict)
 
-# Perform the connections with the modified names within the 'aero_states' group.
-prob.model.connect('wing.mesh', 'laura.aero_states.wing_def_mesh')
-prob.model.connect('wing.t_over_c', 'laura.wing_perf.t_over_c')
+        surface = { 'name' : 'wing', 
+                    'symmetry' : True,
+                    'S_ref_type' : 'wetted',
+                    'twist_cp' : np.zeros(5),
+                    'mesh' : mesh,
+                    'CL0' : 0.0,
+                    'CD0' : 0.001,
+                    'k_lam' : 0.05,
+                    't_over_c_cp' : np.array([0.1875]),
+                    'c_max_t' : 0.1,
+                    'with_viscous' : True,
+                    'with_wave' : False,
+                    'sweep' : 0.,
+                    'alpha' : 0.,
+                    }
 
-prob.model.connect('wing_span', 'wing.mesh.stretch.span')
-prob.model.connect('oas_wing_chord', 'wing.mesh.scale_x.chord')
+        geom_group = Geometry(surface=surface)
+
+        self.add_subsystem(surface['name'], geom_group)
+
+        aero_group = AeroPoint(surfaces=[surface])
+        point_name = 'laura'
+        self.add_subsystem(point_name, aero_group)
+
+        # Connect flow properties to the analysis point
+        self.connect('v', point_name + '.v')
+        self.connect('alpha', point_name + '.alpha')
+        self.connect('Mach_number', point_name + '.Mach_number')
+        self.connect('re', point_name + '.re')
+        self.connect('rho', point_name + '.rho')
+        self.connect('cg', point_name + '.cg')
+
+        # Connect the mesh from the geometry component to the analysis point
+        self.connect('wing.mesh', 'laura.wing.def_mesh')
+
+        # Perform the connections with the modified names within the 'aero_states' group.
+        self.connect('wing.mesh', 'laura.aero_states.wing_def_mesh')
+        self.connect('wing.t_over_c', 'laura.wing_perf.t_over_c')
+
+        self.connect('wing_span', 'wing.mesh.stretch.span')
+        self.connect('oas_wing_chord', 'wing.mesh.scale_x.chord')
+
+
+# prob.setup()
+# prob.run_model()
+# self.list_outputs(prom_name=True)
+
+#CL: laura.CL
+#CD: laura.CD
+#CM: laura.CM

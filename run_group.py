@@ -49,12 +49,10 @@ prob['hover_analysis_group.inputs_comp.speed'] = 1.
 prob['cruise_analysis_group.propulsion_group.rotor_group.inputs_comp.radius_scalar'] = 0.127
 
 prob.run_model()
-prob.model.list_inputs(prom_name=True)
+prob.model.list_outputs(prom_name=True)
 # prob.model.list_outputs(prom_name=True)
 
 # set up optimization problem
-
-
 
 # prob.driver = om.ScipyOptimizeDriver()
 

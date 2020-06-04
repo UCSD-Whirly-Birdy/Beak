@@ -1,5 +1,6 @@
 from openmdao.api import Group, IndepVarComp, ExplicitComponent
 from lsdo_utils.api import PowerCombinationComp
+
 import numpy as np
 
 # r = b/(cos(sweep))

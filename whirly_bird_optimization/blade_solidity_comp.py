@@ -23,7 +23,7 @@ class BladeSolidity(Group):
             coeff=8/np.pi,
             powers_dict=dict(
                 wing_area=1.,
-                wing_span=-1,
+                wing_span=-1.,
             )
         )
         self.add_subsystem('blade_solidity_comp', comp, promotes=['*'])

@@ -43,7 +43,6 @@ class AnalysisGroup(Group):
         # else:
         #     self.add_subsystem('hover_propulsion_group', group)
 
-
         self.connect('inputs_comp.altitude', 'atmosphere_group.altitude')
         self.connect('inputs_comp.speed', 'atmosphere_group.speed')
         self.connect('inputs_comp.speed', 'propulsion_group.speed')

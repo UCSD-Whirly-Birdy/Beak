@@ -30,13 +30,17 @@ performance_group = PerformanceGroup(
 )
 prob.model.add_subsystem('performance_analysis_group', performance_group)
 
-prob.model.connect('cruise_analysis_group.propulsion_group.efficiency','performance_analysis_group.efficiency')
 
+
+prob.model.connect('cruise_analysis_group.propulsion_group.efficiency','performance_analysis_group.efficiency')
 # prob.model.connect('cruise_analysis_group.propulsion_group.thrust','performance_analysis_group.horizontal_cruise_group.thrust_cruise')
 prob.model.connect('cruise_analysis_group.aerodynamics_group.L_D', 'performance_analysis_group.L_D')
+# prob.model.connect()
+
+
+
 
 prob.setup()
-
 
 # set indep variables
 
@@ -49,8 +53,8 @@ prob['hover_analysis_group.inputs_comp.speed'] = 1.
 prob['cruise_analysis_group.propulsion_group.rotor_group.inputs_comp.radius_scalar'] = 0.127
 
 prob.run_model()
+# prob.model.list_inputs(prom_name=True)
 prob.model.list_outputs(prom_name=True)
-# prob.model.list_outputs(prom_name=True)
 
 # set up optimization problem
 
@@ -81,7 +85,7 @@ prob.model.list_outputs(prom_name=True)
 # prob.model.add_constraint('T_D', equals=0.)
 # prob.model.add_constraint('NP_CG', lower= 0.)
 # # add constraint about vertical hover minimum
-# prob.model.add_constraint('Weight', equals=.75)
+# prob.model.add_constraint('Weight', equals=.7)
 # prob.model.add_constraint('wing_span', upper=1.2)
 # ## add constraints and design varaibles 
 # prob.model.add_objective('range', scaler=1e4)
@@ -108,9 +112,9 @@ prob.model.list_outputs(prom_name=True)
 # prob.model.add_objective('laura.wing_perf.CD', scaler=1e4)
 
 # Set up the problem
-prob.setup()
-prob.run_model()
-prob.model.list_outputs(prom_name=True)
+# prob.setup()
+# prob.run_model()
+# prob.model.list_outputs(prom_name=True)
 
 # print("\nWing CL:", prob['laura.wing_perf.CL'])
 # print("Wing CD:", prob['laura.wing_perf.CD'])

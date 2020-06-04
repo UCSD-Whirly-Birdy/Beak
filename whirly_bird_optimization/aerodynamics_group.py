@@ -1,8 +1,8 @@
 from openmdao.api import Group, IndepVarComp
 
-from aerodynamics_geom_group import AerodynamicsGeomGroup
-from cruise_aero_group import CruiseAeroGroup
-from cruise_lift_drag_group import CruiseLiftDragGroup
+from whirly_bird_optimization.aerodynamics_geom_group import AerodynamicsGeomGroup
+from whirly_bird_optimization.cruise_aero_group import CruiseAeroGroup
+from whirly_bird_optimization.cruise_lift_drag_group import CruiseLiftDragGroup
 
 
 class AerodynamicsGroup(Group):
@@ -20,7 +20,7 @@ class AerodynamicsGroup(Group):
         group = CruiseAeroGroup(
             shape=shape
         )
-        self.add_subsystem('cruise_aero_group', group, promotes=['*'])
+        self.add_subsystem('cruise_aero_group', group, promotes_outputs=['laura.CL', 'laura.CD', 'laura.CM']) # add specific imputs and outputs
 
         group = CruiseLiftDragGroup(
             shape=shape

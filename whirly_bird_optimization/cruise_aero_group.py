@@ -7,28 +7,18 @@ from openaerostruct.geometry.utils import generate_mesh, scale_x
 from openaerostruct.geometry.geometry_group import Geometry
 from openaerostruct.aerodynamics.aero_groups import AeroPoint
 
-from aerodynamics_geom_group import AerodynamicsGeomGroup
+from whirly_bird_optimization.aerodynamics_geom_group import AerodynamicsGeomGroup
 
-# prob = om.Problem()
 shape = (1,)
 
 class CruiseAeroGroup(Group):
+
     def initialize(self):
         self.options.declare('shape', types=tuple)
 
     def setup(self):
-
-        # self.add_output('CL', val=1.)
-        # self.add_output('CD', val=1.)
-        # self.add_output('laura.CM', val=1.)
-        # self.add_output('wing.sweep', val=30.)
-        # self.add_output('wing.twist_cp', val=5.)
-
-        # self.add_input('wing_span', val=10)
-        # self.add_input('wing_chord', val=1.)
-
         shape = self.options['shape']
-        
+
         indep_var_comp = om.IndepVarComp()
         indep_var_comp.add_output('v', val=50, units='m/s')
         indep_var_comp.add_output('Mach_number', val=0.3)
@@ -36,7 +26,7 @@ class CruiseAeroGroup(Group):
         indep_var_comp.add_output('rho', val=1.225, units='kg/m**3')
         indep_var_comp.add_output('cg', val=np.zeros((3)), units='m')
         indep_var_comp.add_output('alpha', val = 2.)
-
+        
         self.add_subsystem('ivc', indep_var_comp, promotes=['*'])
         self.add_subsystem('AerodynamicsGeomGroup', AerodynamicsGeomGroup(shape=shape), promotes=['*'])
 
@@ -44,8 +34,8 @@ class CruiseAeroGroup(Group):
                     'num_x' : 9,
                     'wing_type' : 'rect',
                     'symmetry' : True,
-                    'chord': 1,
-                    'span' : 0.1,
+                    'chord': 0.1,
+                    'span' : 1,
                     }
 
         mesh = generate_mesh(mesh_dict)
@@ -91,12 +81,3 @@ class CruiseAeroGroup(Group):
 
         self.connect('wing_span', 'wing.mesh.stretch.span')
         self.connect('oas_wing_chord', 'wing.mesh.scale_x.chord')
-
-
-# prob.setup()
-# prob.run_model()
-# self.list_outputs(prom_name=True)
-
-#CL: laura.CL
-#CD: laura.CD
-#CM: laura.CM

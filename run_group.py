@@ -18,11 +18,11 @@ analysis_group = AnalysisGroup(
 )
 prob.model.add_subsystem('cruise_analysis_group', analysis_group)
 
-analysis_group = AnalysisGroup(
-    shape = shape,
-    mode = 'hover',
-)
-prob.model.add_subsystem('hover_analysis_group', analysis_group)
+# analysis_group = AnalysisGroup(
+#     shape = shape,
+#     mode = 'hover',
+# )
+# prob.model.add_subsystem('hover_analysis_group', analysis_group)
 
 
 performance_group = PerformanceGroup(
@@ -30,23 +30,23 @@ performance_group = PerformanceGroup(
 )
 prob.model.add_subsystem('performance_analysis_group', performance_group)
 
-prob.model.connect('cruise_analysis_group.propulsion_group.efficiency','performance_analysis_group.efficiency')
-prob.model.connect('cruise_analysis_group.aerodynamics_group.L_D', 'performance_analysis_group.L_D')
+# prob.model.connect('cruise_analysis_group.propulsion_group.efficiency','performance_analysis_group.efficiency')
+# prob.model.connect('cruise_analysis_group.aerodynamics_group.L_D', 'performance_analysis_group.L_D')
 # prob.model.connect('')
 
 
 prob.setup()
 prob.run_model()
 # prob.model.list_inputs(prom_name=True)
-prob.model.list_outputs(prom_name=True)
+prob.model.list_inputs(prom_name=True)
 
 # set indep variables
 
-prob['cruise_analysis_group.inputs_comp.altitude'] = 500.
-prob['hover_analysis_group.inputs_comp.altitude'] = 100.
+prob['cruise_analysis_group.inputs_comp.altitude'] = 800.
+# prob['hover_analysis_group.inputs_comp.altitude'] = 100.
 
-prob['cruise_analysis_group.inputs_comp.speed'] = 50.
-prob['hover_analysis_group.inputs_comp.speed'] = 1.
+prob['cruise_analysis_group.inputs_comp.speed'] = 80.
+# prob['hover_analysis_group.inputs_comp.speed'] = 1.
 
 prob['cruise_analysis_group.propulsion_group.rotor_group.inputs_comp.radius_scalar'] = 0.127
 

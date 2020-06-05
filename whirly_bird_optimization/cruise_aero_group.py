@@ -61,7 +61,7 @@ class CruiseAeroGroup(Group):
         self.add_subsystem(surface['name'], geom_group)
 
         aero_group = AeroPoint(surfaces=[surface])
-        point_name = 'laura'
+        point_name = 'aero_point'
         self.add_subsystem(point_name, aero_group)
 
         # Connect flow properties to the analysis point
@@ -73,11 +73,11 @@ class CruiseAeroGroup(Group):
         self.connect('cg', point_name + '.cg')
 
         # Connect the mesh from the geometry component to the analysis point
-        self.connect('wing.mesh', 'laura.wing.def_mesh')
+        self.connect('wing.mesh', 'aero_point.wing.def_mesh')
 
         # Perform the connections with the modified names within the 'aero_states' group.
-        self.connect('wing.mesh', 'laura.aero_states.wing_def_mesh')
-        self.connect('wing.t_over_c', 'laura.wing_perf.t_over_c')
+        self.connect('wing.mesh', 'aero_point.aero_states.wing_def_mesh')
+        self.connect('wing.t_over_c', 'aero_point.wing_perf.t_over_c')
 
         self.connect('wing_span', 'wing.mesh.stretch.span')
         self.connect('oas_wing_chord', 'wing.mesh.scale_x.chord')

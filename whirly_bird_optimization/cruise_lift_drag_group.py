@@ -12,7 +12,7 @@ class CruiseLiftDragGroup(Group):
         comp = IndepVarComp()
         comp.add_output('C_D')
         comp.add_output('C_L')
-        comp.add_output('speed')
+        comp.add_output('speed', val = 50, units= 'm/s')
         comp.add_output('density')
         # comp.add_output('area')
         self.add_subsystem('inputs_comp', comp, promotes=['*'])

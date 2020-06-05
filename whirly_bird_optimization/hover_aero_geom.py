@@ -38,7 +38,7 @@ class HoverAeroVelocity(Group):
         # make connections in run_group (aero_geom_group to this one for wing_span)
         
         # r = b/2/(cos(sweep))
-        comp = ExecComp('radius = wing_span/2/(np.cos(sweep*np.pi/180))',shape=shape)
+        comp = ExecComp('radius = wing_span/2/(cos(sweep*pi/180))',shape=shape)
         self.add_subsystem('radius_comp', comp, promotes = ['*'])
 
 

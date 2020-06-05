@@ -32,7 +32,7 @@ class AnalysisGroup(Group):
             shape=shape,
             # mode=mode,
        )
-        self.add_subsystem('aerodynamics_group', group)
+        self.add_subsystem('aerodynamics_group', group, promotes=['*'])
 
         group = PropulsionGroup(
             shape=shape,

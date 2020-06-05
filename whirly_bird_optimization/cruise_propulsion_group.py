@@ -10,7 +10,7 @@ from lsdo_aircraft.simple_motor.simple_motor_group import SimpleMotorGroup
 from .aerodynamics_geometry_group import AerodynamicsGeometryGroup
 from .blade_solidity_comp import BladeSolidity
 
-class PropulsionGroup(Group):
+class CruisePropulsionGroup(Group):
 
     def initialize(self):
         self.options.declare('shape', types = tuple)

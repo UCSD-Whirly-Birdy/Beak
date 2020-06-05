@@ -31,8 +31,8 @@ performance_group = PerformanceGroup(
 )
 prob.model.add_subsystem('performance_analysis_group', performance_group)
 
-prob.model.connect('cruise_analysis_group.propulsion_group.efficiency','performance_analysis_group.efficiency')
-prob.model.connect('cruise_analysis_group.aerodynamics_group.L_D', 'performance_analysis_group.L_D')
+prob.model.connect('cruise_analysis_group.cruise_propulsion_group.efficiency','performance_analysis_group.efficiency')
+prob.model.connect('cruise_analysis_group.cruise_aerodynamics_group.L_D', 'performance_analysis_group.L_D')
 # prob.model.connect('')
 
 

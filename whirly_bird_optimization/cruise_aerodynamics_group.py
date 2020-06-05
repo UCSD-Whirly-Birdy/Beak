@@ -16,7 +16,7 @@ from openaerostruct.aerodynamics.aero_groups import AeroPoint
 from .aerodynamics_geometry_group import AerodynamicsGeometryGroup
 
 
-class AerodynamicsGroup(Group):
+class CruiseAerodynamicsGroup(Group):
     def initialize(self):
         self.options.declare('shape',types=tuple)
 

@@ -17,8 +17,9 @@ class CruiseAeroGroup(Group):
 
     def setup(self):
         shape = self.options['shape']
-        
 
+        # import drag velocity from hover_velocity_group
+        
         indep_var_comp = om.IndepVarComp()
         indep_var_comp.add_output('v', val=50, units='m/s')
         indep_var_comp.add_output('Mach_number', val=0.3)

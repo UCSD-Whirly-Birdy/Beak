@@ -5,7 +5,7 @@ from openmdao.api import Problem, Group, IndepVarComp
 
 from whirly_bird_optimization.analysis_group import AnalysisGroup
 from whirly_bird_optimization.performance_group import PerformanceGroup
-from whirly_bird_optimization.equilibrium_group import EquilibriumGroup
+#from whirly_bird_optimization.equilibrium_group import EquilibriumGroup ---> not used here, it's part of performance
 
 n = 1
 shape = (n,n)

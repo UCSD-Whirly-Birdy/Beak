@@ -1,5 +1,6 @@
 from openmdao.api import Group, IndepVarComp, ExplicitComponent, ExecComp
 from lsdo_utils.api import PowerCombinationComp
+
 import numpy as np
 
 # class HoverRadiusComp(ExplicitComponent):

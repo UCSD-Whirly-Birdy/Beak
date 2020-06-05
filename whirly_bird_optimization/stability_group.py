@@ -27,7 +27,7 @@ class StabilityGroup(Group):
         comp = ExecComp('center_of_gravity = ' + 
             'body_weight_ratio*chord/2 + ' +
             'wing_weight_ratio*(wing_span*tan(sweep*pi/180)/4 + chord/2) + ' + 
-            'motor_weight_ratio*(wing_span*tan(sweep*pi/180)/2 + chord/2)')
+            'motor_weight_ratio*(wing_span*tan(sweep*pi/180)/2 + chord/2)', shape=shape)
         self.add_subsystem('center_of_gravity', comp, promotes = ['*'])
 
         comp = LinearPowerCombinationComp(

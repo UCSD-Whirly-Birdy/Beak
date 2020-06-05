@@ -3,7 +3,8 @@ import openmdao.api as om
 
 from openmdao.api import Problem, Group, IndepVarComp
 
-from whirly_bird_optimization.analysis_group import AnalysisGroup
+from whirly_bird_optimization.cruise_analysis_group import CruiseAnalysisGroup
+from whirly_bird_optimization.hover_analysis_group import HoverAnalysisGroup
 from whirly_bird_optimization.performance_group import PerformanceGroup
 #from whirly_bird_optimization.equilibrium_group import EquilibriumGroup ---> not used here, it's part of performance
 
@@ -12,17 +13,17 @@ shape = (n,n)
 
 prob = Problem()
 
-analysis_group = AnalysisGroup(
+cruise_analysis_group = CruiseAnalysisGroup(
     shape = shape,
-    mode = 'cruise',
+    #mode = 'cruise',
 )
-prob.model.add_subsystem('cruise_analysis_group', analysis_group)
+prob.model.add_subsystem('cruise_analysis_group', cruise_analysis_group)
 
-analysis_group = AnalysisGroup(
+hover_analysis_group = HoverAnalysisGroup(
     shape = shape,
-    mode = 'hover',
+    #mode = 'hover',
 )
-prob.model.add_subsystem('hover_analysis_group', analysis_group)
+prob.model.add_subsystem('hover_analysis_group', hover_analysis_group)
 
 
 performance_group = PerformanceGroup(
@@ -43,10 +44,10 @@ prob.model.list_outputs(prom_name=True)
 # set indep variables
 
 prob['cruise_analysis_group.inputs_comp.altitude'] = 500.
-prob['hover_analysis_group.inputs_comp.altitude'] = 100.
+#prob['hover_analysis_group.inputs_comp.altitude'] = 100.
 
 prob['cruise_analysis_group.inputs_comp.speed'] = 50.
-prob['hover_analysis_group.inputs_comp.speed'] = 1.
+#prob['hover_analysis_group.inputs_comp.speed'] = 1.
 
 prob['cruise_analysis_group.propulsion_group.rotor_group.inputs_comp.radius_scalar'] = 0.127
 

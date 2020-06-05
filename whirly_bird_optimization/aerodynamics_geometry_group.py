@@ -4,7 +4,7 @@ from lsdo_utils.api import PowerCombinationComp, ScalarExpansionComp
 import numpy as np
 
 
-class AerodynamicsGeomGroup(Group):
+class AerodynamicsGeometryGroup(Group):
 
     def initialize(self):
         self.options.declare('shape', types = tuple)

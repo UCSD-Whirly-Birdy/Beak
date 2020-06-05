@@ -17,7 +17,7 @@ class StabilityGroup(Group):
             in_names = ['neutral_point','center_of_gravity', 'mac'],
             out_name = 'static_margin',
             terms_list=[
-                (dict(
+                (1., dict(
                     neutral_point=1.,
                     mac=-1.,
                 )),

@@ -7,17 +7,16 @@ from openaerostruct.geometry.utils import generate_mesh, scale_x
 from openaerostruct.geometry.geometry_group import Geometry
 from openaerostruct.aerodynamics.aero_groups import AeroPoint
 
-from whirly_bird_optimization.aerodynamics_geom_group import AerodynamicsGeomGroup
+from .aerodynamics_geom_group import AerodynamicsGeomGroup
 
-shape = (1,)
 
 class CruiseAeroGroup(Group):
-
     def initialize(self):
         self.options.declare('shape', types=tuple)
 
     def setup(self):
         shape = self.options['shape']
+        
 
         indep_var_comp = om.IndepVarComp()
         indep_var_comp.add_output('v', val=50, units='m/s')
@@ -26,8 +25,9 @@ class CruiseAeroGroup(Group):
         indep_var_comp.add_output('rho', val=1.225, units='kg/m**3')
         indep_var_comp.add_output('cg', val=np.zeros((3)), units='m')
         indep_var_comp.add_output('alpha', val = 2.)
-        
+
         self.add_subsystem('ivc', indep_var_comp, promotes=['*'])
+        shape = (1,)
         self.add_subsystem('AerodynamicsGeomGroup', AerodynamicsGeomGroup(shape=shape), promotes=['*'])
 
         mesh_dict = {'num_y' : 17,

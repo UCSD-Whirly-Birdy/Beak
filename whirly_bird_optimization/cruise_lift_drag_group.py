@@ -1,9 +1,6 @@
 from openmdao.api import Group, IndepVarComp
 from lsdo_utils.api import PowerCombinationComp
 
-from .cruise_aero_group import CruiseAeroGroup
-# from analysis_group import AtmosphereGroup
-
 class CruiseLiftDragGroup(Group):
 
     def initialize(self):
@@ -13,14 +10,12 @@ class CruiseLiftDragGroup(Group):
         shape = self.options['shape']
         
         comp = IndepVarComp()
-        comp.add_output('C_D') # connect to CD from cruise_oas
-        comp.add_output('C_L') # connect to CL from cruise_oas
-        comp.add_output('speed', val=50, units='m/s')
-        comp.add_output('density', val=1.225)
-        comp.add_output('wing_area')
+        comp.add_output('C_D')
+        comp.add_output('C_L')
+        comp.add_output('speed')
+        comp.add_output('density')
+        # comp.add_output('area')
         self.add_subsystem('inputs_comp', comp, promotes=['*'])
-        # self.connect('analysis_group.atmosphere_group.density', 'density')
-
 
         # D = 0.5 * rho * v^2 * C_D * S
         comp = PowerCombinationComp(
@@ -28,7 +23,7 @@ class CruiseLiftDragGroup(Group):
             out_name='cruise_drag',
             coeff=0.5,
             powers_dict=dict(
-                wing_area=1.,
+                area=1.,
                 C_D=1,
                 speed=2.,
                 density=1.
@@ -42,7 +37,7 @@ class CruiseLiftDragGroup(Group):
             out_name='cruise_lift',
             coeff=0.5,
             powers_dict=dict(
-                wing_area=1.,
+                area=1.,
                 C_L=1,
                 speed=2.,
                 density=1.
@@ -60,3 +55,4 @@ class CruiseLiftDragGroup(Group):
             )
         )
         self.add_subsystem('L_D_comp', comp, promotes=['*'])
+

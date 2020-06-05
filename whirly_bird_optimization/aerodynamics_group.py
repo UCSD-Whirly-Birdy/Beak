@@ -12,15 +12,15 @@ class AerodynamicsGroup(Group):
     def setup(self):
         shape = self.options['shape']
 
-        group = AerodynamicsGeomGroup(
-            shape=shape
-        )
-        self.add_subsystem('aerodynamics_geom_group',group, promotes=['*'])
+        # group = AerodynamicsGeomGroup(
+        #     shape=shape
+        # )
+        # self.add_subsystem('aerodynamics_geom_group', group, promotes=['*'])
 
         group = CruiseAeroGroup(
             shape=shape
         )
-        self.add_subsystem('cruise_aero_group', group, promotes_outputs=['laura.CL', 'laura.CD', 'laura.CM']) # add specific imputs and outputs
+        self.add_subsystem('cruise_aero_group', group, promotes=['*'])
 
         group = CruiseLiftDragGroup(
             shape=shape

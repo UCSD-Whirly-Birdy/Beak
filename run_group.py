@@ -42,10 +42,10 @@ prob.model.list_inputs(prom_name=True)
 
 # set indep variables
 
-prob['cruise_analysis_group.inputs_comp.altitude'] = 800.
+prob['cruise_analysis_group.inputs_comp.altitude'] = 500.
 # prob['hover_analysis_group.inputs_comp.altitude'] = 100.
 
-prob['cruise_analysis_group.inputs_comp.speed'] = 80.
+prob['cruise_analysis_group.inputs_comp.speed'] = 50.
 # prob['hover_analysis_group.inputs_comp.speed'] = 1.
 
 prob['cruise_analysis_group.propulsion_group.rotor_group.inputs_comp.radius_scalar'] = 0.127

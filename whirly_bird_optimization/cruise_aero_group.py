@@ -1,7 +1,7 @@
 import numpy as np
 import openmdao.api as om
 
-from openmdao.api import Group, ExplicitComponent
+from openmdao.api import Group
 
 from openaerostruct.geometry.utils import generate_mesh, scale_x
 from openaerostruct.geometry.geometry_group import Geometry
@@ -35,7 +35,7 @@ class CruiseAeroGroup(Group):
                     'wing_type' : 'rect',
                     'symmetry' : True,
                     'chord': 0.1,
-                    'span' : 1,
+                    'span' : 1.,
                     }
 
         mesh = generate_mesh(mesh_dict)

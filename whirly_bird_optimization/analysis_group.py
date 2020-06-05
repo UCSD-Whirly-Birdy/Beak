@@ -3,8 +3,8 @@ from openmdao.api import Group, IndepVarComp
 from lsdo_aircraft.atmosphere.atmosphere import Atmosphere
 from lsdo_aircraft.atmosphere.atmosphere_group import AtmosphereGroup
 
-from whirly_bird_optimization.aerodynamics_group import AerodynamicsGroup
-from whirly_bird_optimization.propulsion_group import PropulsionGroup
+from .aerodynamics_group import AerodynamicsGroup
+from .propulsion_group import PropulsionGroup
 
 
 class AnalysisGroup(Group):

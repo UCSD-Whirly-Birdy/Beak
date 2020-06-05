@@ -14,7 +14,7 @@ class CruiseLiftDragGroup(Group):
         comp.add_output('C_L')
         comp.add_output('speed')
         comp.add_output('density')
-        comp.add_output('wing_area')
+        # comp.add_output('area')
         self.add_subsystem('inputs_comp', comp, promotes=['*'])
 
         # D = 0.5 * rho * v^2 * C_D * S
@@ -23,7 +23,7 @@ class CruiseLiftDragGroup(Group):
             out_name='cruise_drag',
             coeff=0.5,
             powers_dict=dict(
-                wing_area=1.,
+                area=1.,
                 C_D=1,
                 speed=2.,
                 density=1.
@@ -37,7 +37,7 @@ class CruiseLiftDragGroup(Group):
             out_name='cruise_lift',
             coeff=0.5,
             powers_dict=dict(
-                wing_area=1.,
+                area=1.,
                 C_L=1,
                 speed=2.,
                 density=1.

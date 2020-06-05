@@ -1,4 +1,4 @@
-from openmdao.api import Group, IndepVarComp, ExplicitComponent, ExecComp
+from openmdao.api import Group, IndepVarComp, ExecComp
 from lsdo_utils.api import PowerCombinationComp
 import numpy as np
 
@@ -32,11 +32,15 @@ class HoverAeroVelocity(Group):
 
         comp = IndepVarComp()
         comp.add_output('hover_RPM')
+        # if design variable, add as output in IVC
         self.add_subsystem('inputs_comp', comp, promotes = ['*'])
+
+        # make connections in run_group (aero_geom_group to this one for wing_span)
         
         # r = b/2/(cos(sweep))
         comp = ExecComp('radius = wing_span/2/(np.cos(sweep*np.pi/180))',shape=shape)
         self.add_subsystem('radius_comp', comp, promotes = ['*'])
+
 
         # ExecComp defines the equation and calculates given the equation/inputs 
         # Need to connect sweep/wingspan to this Group and then can compute the 

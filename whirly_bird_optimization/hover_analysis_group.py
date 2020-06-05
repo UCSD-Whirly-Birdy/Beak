@@ -7,14 +7,14 @@ from whirly_bird_optimization.aerodynamics_group import AerodynamicsGroup
 from whirly_bird_optimization.propulsion_group import PropulsionGroup
 
 
-class AnalysisGroup(Group):
+class HoverAnalysisGroup(Group):
     def initialize(self):
         self.options.declare('shape', types = tuple)
-        self.options.declare('mode', types = str)
+        #self.options.declare('mode', types = str)
 
     def setup(self):
         shape = self.options['shape']
-        # mode = self.options['mode']
+
 
         comp = IndepVarComp()
         comp.add_output('altitude')
@@ -38,10 +38,6 @@ class AnalysisGroup(Group):
             shape=shape,
         )
         self.add_subsystem('propulsion_group', group)
-        # if mode == 'cruise':
-        #     self.add_subsystem('cruise_propulsion_group', group)
-        # else:
-        #     self.add_subsystem('hover_propulsion_group', group)
 
         self.connect('inputs_comp.altitude', 'atmosphere_group.altitude')
         self.connect('inputs_comp.speed', 'atmosphere_group.speed')

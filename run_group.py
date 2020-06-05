@@ -1,6 +1,7 @@
 import numpy as np
 import openmdao.api as om
 
+
 from openmdao.api import Problem, Group, IndepVarComp
 
 from whirly_bird_optimization.analysis_group import AnalysisGroup

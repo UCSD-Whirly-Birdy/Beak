@@ -21,7 +21,7 @@ import numpy as np
 #         partials['radius','wing_span'] = 1./(2.*np.cos(inputs['sweep']*np.pi/180))
 #         partials['radius','sweep'] = np.pi*inputs['wing_span']/360.*np.sin(np.pi/180.*inputs['sweep'])/(np.cos(np.pi/180.*inputs['sweep']))**2
 
-class HoverVelocity(Group):
+class HoverVelocityGroup(Group):
 
     def initialize(self):
         self.options.declare('shape', types=tuple)

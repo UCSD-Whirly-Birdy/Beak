@@ -11,7 +11,7 @@ from .aerodynamics_geom_group import AerodynamicsGeomGroup
 
 # Update the velocity and change group name
 
-class CruiseAeroGroup(Group):
+class HoverDragGroup(Group):
     def initialize(self):
         self.options.declare('shape', types=tuple)
 

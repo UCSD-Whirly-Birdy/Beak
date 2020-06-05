@@ -21,8 +21,7 @@ import numpy as np
 #         partials['radius','wing_span'] = 1./(2.*np.cos(inputs['sweep']*np.pi/180))
 #         partials['radius','sweep'] = np.pi*inputs['wing_span']/360.*np.sin(np.pi/180.*inputs['sweep'])/(np.cos(np.pi/180.*inputs['sweep']))**2
 
-
-class HoverAeroVelocity(Group):
+class HoverDragVelocity(Group):
 
     def initialize(self):
         self.options.declare('shape', types=tuple)
@@ -38,9 +37,8 @@ class HoverAeroVelocity(Group):
         # make connections in run_group (aero_geom_group to this one for wing_span)
         
         # r = b/2/(cos(sweep))
-        comp = ExecComp('radius = wing_span/2/(np.cos(sweep*np.pi/180))',shape=shape)
+        comp = ExecComp('radius = wing_span/2/(cos(sweep*pi/180))',shape=shape)
         self.add_subsystem('radius_comp', comp, promotes = ['*'])
-
 
         # ExecComp defines the equation and calculates given the equation/inputs 
         # Need to connect sweep/wingspan to this Group and then can compute the 
@@ -51,10 +49,21 @@ class HoverAeroVelocity(Group):
         comp = PowerCombinationComp(
             shape=shape,
             coeff = 2. * np.pi / 60. * .75,
-            out_name='hover_velocity',
+            out_name='hover_drag_velocity',
             powers_dict=dict(
                 hover_RPM = 1.,
                 radius = 1.,
             )
         )
-        self.add_subsystem('hover_velocity_comp',comp,promotes=['*'])
+        self.add_subsystem('hover_drag_velocity_comp',comp,promotes=['*'])
+
+        comp = PowerCombinationComp(
+            shape=shape,
+            coeff = 2. * np.pi / 60.,
+            out_name='hover_torque_velocity',
+            powers_dict=dict(
+                hover_RPM = 1.,
+                radius = 1.,
+            )
+        )
+        self.add_subsystem('hover_torque_velocity_comp',comp,promotes=['*'])

@@ -2,7 +2,7 @@ from openmdao.api import Group, IndepVarComp
 from lsdo_utils.api import LinearCombinationComp
 
 # from whirly_bird_optimization.cruise_equilibrium_group import HorizontalCruiseEqGroup, VerticalCruiseEqGroup
-from whirly_bird_optimization.hover_equilibrium_group import TorqueHoverEqGroup, VerticalHoverEqGroup
+#from whirly_bird_optimization.hover_equilibrium_group import TorqueHoverEqGroup, VerticalHoverEqGroup
 
 class EquilibriumGroup(Group):
     def initialize(self):
@@ -37,12 +37,34 @@ class EquilibriumGroup(Group):
         )
         self.add_subsystem('vertical_cruise_comp',comp, promotes = ['*'])
 
-        group = TorqueHoverEqGroup(
-            shape=shape
-        )
-        self.add_subsystem('torque_hover_group', group, promotes=['*'])
 
-        group = VerticalHoverEqGroup(
-            shape=shape
+        # group = VerticalCruiseEqGroup(
+        #     shape=shape
+        # )
+        # self.add_subsystem('vertical_cruise_group', group, promotes=['*'])
+
+        comp = LinearCombinationComp(
+            shape=shape,
+            in_names = ['thrust_torque_hover','drag_torque_hover'],
+            out_name = 'torque_hover_eq',
+            coeffs = [1., -1.],
         )
-        self.add_subsystem('vertical_hover_group', group, promotes=['*'])
+        self.add_subsystem('torque_hover_comp',comp, promotes = ['*'])
+        
+        # group = TorqueHoverEqGroup(
+        #     shape=shape
+        # )
+        # self.add_subsystem('torque_hover_group', group, promotes=['*'])
+
+        comp = LinearCombinationComp(
+            shape=shape,
+            in_names = ['lift_hover','weight'],
+            out_name = 'vertical_hover_eq',
+            coeffs = [1., -1.],
+        )
+        self.add_subsystem('vertical_hover_comp',comp, promotes = ['*'])
+
+        # group = VerticalHoverEqGroup(
+        #     shape=shape
+        # )
+        # self.add_subsystem('vertical_hover_group', group, promotes=['*'])

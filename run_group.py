@@ -31,7 +31,6 @@ performance_group = PerformanceGroup(
 prob.model.add_subsystem('performance_analysis_group', performance_group)
 
 
-
 prob.model.connect('cruise_analysis_group.propulsion_group.efficiency','performance_analysis_group.efficiency')
 # prob.model.connect('cruise_analysis_group.propulsion_group.thrust','performance_analysis_group.horizontal_cruise_group.thrust_cruise')
 prob.model.connect('cruise_analysis_group.aerodynamics_group.L_D', 'performance_analysis_group.L_D')
@@ -52,6 +51,9 @@ prob['hover_analysis_group.inputs_comp.speed'] = 1.
 
 prob['cruise_analysis_group.propulsion_group.rotor_group.inputs_comp.radius_scalar'] = 0.127
 
+#prob.run_model()
+#prob.model.list_inputs(prom_name=True)
+#prob.model.list_outputs(prom_name=True)
 prob.run_model()
 # prob.model.list_inputs(prom_name=True)
 prob.model.list_outputs(prom_name=True)
@@ -96,7 +98,7 @@ prob.model.list_outputs(prom_name=True)
 
 ## - - - - - - - - - - - (maybe write another script for optimization and visualization)
 
-# prob.driver = om.ScipyOptimizeDriver()
+prob.driver = om.ScipyOptimizeDriver()
 
 # recorder = om.SqliteRecorder("aero_wb.db")
 # prob.driver.add_recorder(recorder)
@@ -112,9 +114,11 @@ prob.model.list_outputs(prom_name=True)
 # prob.model.add_objective('laura.wing_perf.CD', scaler=1e4)
 
 # Set up the problem
-# prob.setup()
-# prob.run_model()
-# prob.model.list_outputs(prom_name=True)
+
+#prob.setup()
+prob.run_model()
+prob.model.list_outputs(prom_name=True)
+prob.model.list_inputs(prom_name=True)
 
 # print("\nWing CL:", prob['laura.wing_perf.CL'])
 # print("Wing CD:", prob['laura.wing_perf.CD'])

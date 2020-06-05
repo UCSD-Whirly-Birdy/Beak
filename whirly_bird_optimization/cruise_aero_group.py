@@ -43,7 +43,7 @@ class CruiseAeroGroup(Group):
         surface = { 'name' : 'wing', 
                     'symmetry' : True,
                     'S_ref_type' : 'wetted',
-                    'twist_cp' : np.zeros(5),
+                    'twist_cp' : np.zeros(3),
                     'mesh' : mesh,
                     'CL0' : 0.0,
                     'CD0' : 0.001,

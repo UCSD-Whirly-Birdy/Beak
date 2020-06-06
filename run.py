@@ -38,11 +38,6 @@ prob.model.connect('cruise_analysis_group.cruise_aerodynamics_group.L_D', 'perfo
 
 prob.setup(check=True)
 prob.setup()
-prob.run_model()
-# prob.model.list_inputs(prom_name=True)
-prob.model.list_outputs(prom_name=True)
-
-# set indep variables
 
 prob['cruise_analysis_group.inputs_comp.altitude'] = 500.
 prob['hover_analysis_group.inputs_comp.altitude'] = 100.
@@ -53,8 +48,11 @@ prob['hover_analysis_group.inputs_comp.speed'] = 1.
 prob['cruise_analysis_group.cruise_propulsion_group.mass'] = 0.03
 prob['cruise_analysis_group.cruise_propulsion_group.rotor_group.inputs_comp.radius_scalar'] = 0.127
 
-prob['cruise_analysis_group.cruise_propulsion_group.normalized_torque'] = 1000.
+prob['cruise_analysis_group.cruise_propulsion_group.normalized_torque'] = 1.
 prob['cruise_analysis_group.cruise_propulsion_group.angular_speed'] = 1500.
+prob['cruise_analysis_group.cruise_propulsion_group.stator_diameter'] = 0.022
+prob['cruise_analysis_group.cruise_propulsion_group.shaft_diameter'] = 0.003
+prob['cruise_analysis_group.cruise_propulsion_group.outer_diameter'] = 0.0279
 
 # # # Setup problem and add design variables, constraint, and objective
 # prob.model.add_design_var('twist_cp', lower=-20., upper=20.)
@@ -71,9 +69,8 @@ prob['cruise_analysis_group.cruise_propulsion_group.angular_speed'] = 1500.
 
 prob.run_model()
 
-prob.model.list_inputs(prom_name=True)
 # prob.model.list_inputs(prom_name=True)
-prob.model.list_outputs(prom_name=True)
+prob.model.list_inputs(prom_name=True)
 
 # set up optimization problem
 

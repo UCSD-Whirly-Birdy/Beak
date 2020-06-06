@@ -14,7 +14,7 @@ class CruisePropulsionGroup(Group):
 
     def initialize(self):
         self.options.declare('shape', types = tuple)
-        self.options.declare('mode', types = str)
+        #self.options.declare('mode', types = str)
 
     def setup(self):
         shape = self.options['shape']

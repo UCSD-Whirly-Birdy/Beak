@@ -8,7 +8,7 @@ from openaerostruct.geometry.geometry_group import Geometry
 from openaerostruct.aerodynamics.aero_groups import AeroPoint
 
 from .aerodynamics_geometry_group import AerodynamicsGeometryGroup
-from hover_velocity_group import HoverVelocityGroup
+from .hover_velocity_group import HoverVelocityGroup
 
 
 class HoverAerodynamicsGroup(Group):

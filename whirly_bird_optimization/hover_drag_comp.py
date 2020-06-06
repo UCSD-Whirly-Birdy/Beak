@@ -1,3 +1,9 @@
+#from openmdao.api import Group, IndepVarComp
+
+#from whirly_bird_optimization.aerodynamics_geom_group import AerodynamicsGeomGroup
+#from whirly_bird_optimization.cruise_aero_group import CruiseAeroGroup
+from whirly_bird_optimization.cruise_lift_drag_group import CruiseLiftDragGroup
+
 import numpy as np
 import openmdao.api as om
 
@@ -7,19 +13,21 @@ from openaerostruct.geometry.utils import generate_mesh, scale_x
 from openaerostruct.geometry.geometry_group import Geometry
 from openaerostruct.aerodynamics.aero_groups import AeroPoint
 
-from .aerodynamics_geom_group import AerodynamicsGeomGroup
+from .aerodynamics_geometry_group import AerodynamicsGeometryGroup
 
-# Update the velocity and change group name
 
-class CruiseAeroGroup(Group):
+class HoverDragGroup(Group):
     def initialize(self):
-        self.options.declare('shape', types=tuple)
+        self.options.declare('shape',types=tuple)
 
     def setup(self):
         shape = self.options['shape']
 
-        # import drag velocity from hover_velocity_group
-        
+        # group = AerodynamicsGeomGroup(
+        #     shape=shape
+        # )
+        # self.add_subsystem('aerodynamics_geom_group', group, promotes=['*'])
+
         indep_var_comp = om.IndepVarComp()
         indep_var_comp.add_output('v', val=50, units='m/s')
         indep_var_comp.add_output('Mach_number', val=0.3)
@@ -30,7 +38,7 @@ class CruiseAeroGroup(Group):
 
         self.add_subsystem('ivc', indep_var_comp, promotes=['*'])
         shape = (1,)
-        self.add_subsystem('AerodynamicsGeomGroup', AerodynamicsGeomGroup(shape=shape), promotes=['*'])
+        self.add_subsystem('aerodynamics_geometry_group', AerodynamicsGeometryGroup(shape=shape), promotes=['*'])
 
         mesh_dict = {'num_y' : 17,
                     'num_x' : 9,
@@ -83,3 +91,14 @@ class CruiseAeroGroup(Group):
 
         self.connect('wing_span', 'wing.mesh.stretch.span')
         self.connect('oas_wing_chord', 'wing.mesh.scale_x.chord')
+
+
+        # group = CruiseAeroGroup(
+        #     shape=shape
+        # )
+        # self.add_subsystem('cruise_aero_group', group, promotes=['*'])
+
+        group = CruiseLiftDragGroup(
+            shape=shape
+        )
+        self.add_subsystem('cruise_lift_drag_group', group, promotes=['*'])

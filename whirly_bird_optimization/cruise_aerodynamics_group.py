@@ -23,20 +23,15 @@ class CruiseAerodynamicsGroup(Group):
     def setup(self):
         shape = self.options['shape']
 
-        # group = AerodynamicsGeomGroup(
-        #     shape=shape
-        # )
-        # self.add_subsystem('aerodynamics_geom_group', group, promotes=['*'])
-
         indep_var_comp = om.IndepVarComp()
-        indep_var_comp.add_output('v', val=50, units='m/s')
-        indep_var_comp.add_output('Mach_number', val=0.3)
+        #indep_var_comp.add_output('v', val=50, units='m/s')
+        #indep_var_comp.add_output('Mach_number', val=0.3)
         indep_var_comp.add_output('re', val=1.e6, units='1/m')
-        indep_var_comp.add_output('rho', val=1.225, units='kg/m**3')
+        indep_var_comp.add_output('rho')
         indep_var_comp.add_output('cg', val=np.zeros((3)), units='m')
         indep_var_comp.add_output('alpha', val = 2.)
 
-        self.add_subsystem('ivc', indep_var_comp, promotes=['*'])
+        self.add_subsystem('inputs_comp', indep_var_comp, promotes=['*'])
         shape = (1,)
         self.add_subsystem('aerodynamics_geometry_group', AerodynamicsGeometryGroup(shape=shape), promotes=['*'])
 
@@ -71,23 +66,23 @@ class CruiseAerodynamicsGroup(Group):
         self.add_subsystem(surface['name'], geom_group)
 
         aero_group = AeroPoint(surfaces=[surface])
-        point_name = 'laura'
+        point_name = 'aero_point'
         self.add_subsystem(point_name, aero_group)
 
         # Connect flow properties to the analysis point
-        self.connect('v', point_name + '.v')
+        #self.connect('v', point_name + '.v')
         self.connect('alpha', point_name + '.alpha')
-        self.connect('Mach_number', point_name + '.Mach_number')
+        #self.connect('Mach_number', point_name + '.Mach_number')
         self.connect('re', point_name + '.re')
-        self.connect('rho', point_name + '.rho')
+        #self.connect('rho', point_name + '.rho')
         self.connect('cg', point_name + '.cg')
 
         # Connect the mesh from the geometry component to the analysis point
-        self.connect('wing.mesh', 'laura.wing.def_mesh')
+        self.connect('wing.mesh', 'aero_point.wing.def_mesh')
 
         # Perform the connections with the modified names within the 'aero_states' group.
-        self.connect('wing.mesh', 'laura.aero_states.wing_def_mesh')
-        self.connect('wing.t_over_c', 'laura.wing_perf.t_over_c')
+        self.connect('wing.mesh', 'aero_point.aero_states.wing_def_mesh')
+        self.connect('wing.t_over_c', 'aero_point.wing_perf.t_over_c')
 
         self.connect('wing_span', 'wing.mesh.stretch.span')
         self.connect('oas_wing_chord', 'wing.mesh.scale_x.chord')

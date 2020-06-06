@@ -33,12 +33,12 @@ class HoverAnalysisGroup(Group):
             shape=shape,
         )
         self.add_subsystem('hover_velocity_group', group)
-#Add the following commented groups once the groups themselves are defined:
-    #     group = HoverAerodynamicsGroup(
-    #         shape=shape,
-    #         # mode=mode,
-    #    )
-    #     self.add_subsystem('hover_aerodynamics_group', group)
+
+        group = HoverAerodynamicsGroup(
+            shape=shape,
+            # mode=mode,
+       )
+        self.add_subsystem('hover_aerodynamics_group', group)
 
         group = HoverPropulsionGroup(
             shape=shape,

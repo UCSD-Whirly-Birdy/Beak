@@ -35,21 +35,19 @@ prob.model.connect('cruise_analysis_group.propulsion_group.efficiency','performa
 prob.model.connect('cruise_analysis_group.aerodynamics_group.L_D', 'performance_analysis_group.L_D')
 # prob.model.connect('')
 
-
 prob.setup()
+
+prob['cruise_analysis_group.inputs_comp.altitude'] = 500.
+# prob['hover_analysis_group.inputs_comp.altitude'] = 100.
+prob['cruise_analysis_group.inputs_comp.speed'] = 50.
+#prob['hover_analysis_group.inputs_comp.speed'] = 1.
+prob['cruise_analysis_group.propulsion_group.rotor_group.inputs_comp.radius_scalar'] = 0.127
+
 prob.run_model()
 # prob.model.list_inputs(prom_name=True)
 prob.model.list_outputs(prom_name=True)
 
 # set indep variables
-
-prob['cruise_analysis_group.inputs_comp.altitude'] = 500.
-#prob['hover_analysis_group.inputs_comp.altitude'] = 100.
-
-prob['cruise_analysis_group.inputs_comp.speed'] = 50.
-#prob['hover_analysis_group.inputs_comp.speed'] = 1.
-
-prob['cruise_analysis_group.propulsion_group.rotor_group.inputs_comp.radius_scalar'] = 0.127
 
 # set up optimization problem
 
@@ -68,7 +66,7 @@ prob['cruise_analysis_group.propulsion_group.rotor_group.inputs_comp.radius_scal
 # prob.model.add_design_var('alpha', lower=0., upper=10.)
 # prob.model.add_design_var('power_coefficient', lower=0., upper=0.8)
 # prob.model.add_design_var('propeller_diameter', lower=0.1, upper=1.2)
-# prob.model.add_design_var('propeller_RPM', lower=0., upper=28860)
+# prob.model.add_design_var('propeller_RPM', lower=0., upper=3000.)
 # prob.model.add_design_var('hover_RPM', lower=400., upper=600.)
 # prob.model.add_design_var('ref_point', lower=0.,upper=prob['wing_span']/2*np.tan(prob['sweep']*np.pi/180) + prob['chord']) 
 # # need to set upper limit of ref_point as c + b/2*tan(sweep*pi/180)

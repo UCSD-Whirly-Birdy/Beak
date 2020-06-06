@@ -1,24 +1,22 @@
 from openmdao.api import Group, IndepVarComp, ExecComp
 from lsdo_utils.api import LinearPowerCombinationComp
 import numpy as np
-
-#edit the following line:
-#from whirly_bird_optimization.cruise_aerodynamics_group import NeutralPointGroup
+from lsdo_aircraft.simple_motor.simple_motor import SimpleMotor
+from lsdo_aircraft.simple_motor.simple_motor_group import SimpleMotorGroup
 
 class StabilityGroup(Group):
     def initialize(self):
         self.options.declare('shape',types=tuple)
-        #self.options.declare('mac',types=tuple)
+        self.options.declare('mac',types=float)
 
     def setup(self):
         shape = self.options['shape']
 
         comp = IndepVarComp()
         comp.add_output('sweep')
-        comp.add_output('body_weight_ratio',val=.45) # maybe change body
-        comp.add_output('wing_weight_ratio',val=.45)
-        comp.add_output('motor_weight_ratio',val=.1)
-        # weight ratios should add to 1
+        comp.add_output('body_weight_ratio') # weight of wing/total weight
+        comp.add_output('wing_weight_ratio') # weight of wing/total weight
+        comp.add_output('motor_weight_ratio') # weight of wing/total weight
         self.add_subsystem('inputs_comp',comp, promotes = ['*'])
 
         comp = ExecComp('neutral_point = (chord + wing_span*tan(sweep*pi/180))/4', shape=shape)

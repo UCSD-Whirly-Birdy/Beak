@@ -44,5 +44,5 @@ class CruiseAnalysisGroup(Group):
         self.connect('inputs_comp.speed', 'cruise_propulsion_group.speed')
         self.connect('atmosphere_group.sonic_speed', 'cruise_propulsion_group.sonic_speed')
         self.connect('atmosphere_group.density', 'cruise_propulsion_group.density')
-       # self.connect('cruise_analysis_group.propulsion_group.radius_scalar', 'cruise_analysis_group.propulsion_group.rotor_group.radius_comp.radius_scalar')
+       # self.connect('cruise_analysis_group.cruise_propulsion_group.radius_scalar', 'cruise_analysis_group.propulsion_group.rotor_group.radius_comp.radius_scalar')
 

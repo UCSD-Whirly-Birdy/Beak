@@ -67,7 +67,7 @@ prob['cruise_analysis_group.cruise_propulsion_group.angular_speed'] = 1500.
 
 prob.run_model()
 
-# prob.model.list_inputs(prom_name=True)
+prob.model.list_inputs(prom_name=True)
 prob.model.list_outputs(prom_name=True)
 
 # set up optimization problem

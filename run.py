@@ -37,6 +37,10 @@ prob.model.connect('cruise_analysis_group.cruise_aerodynamics_group.L_D', 'perfo
 
 
 prob.setup(check=True)
+prob.setup()
+prob.run_model()
+# prob.model.list_inputs(prom_name=True)
+prob.model.list_outputs(prom_name=True)
 
 # set indep variables
 
@@ -64,8 +68,6 @@ prob['cruise_analysis_group.cruise_propulsion_group.angular_speed'] = 1500.
 # prob.model.add_design_var('hover_RPM', lower=400., upper=600.)
 # prob.model.add_design_var('ref_point', lower=0.,upper=prob['wing_span']/2*np.tan(prob['sweep']*np.pi/180) + prob['chord']) 
 # # need to set upper limit of ref_point as c + b/2*tan(sweep*pi/180)
-
-prob.run_model()
 
 # prob.model.list_inputs(prom_name=True)
 prob.model.list_outputs(prom_name=True)

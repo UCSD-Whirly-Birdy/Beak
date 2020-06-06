@@ -1,3 +1,9 @@
+#from openmdao.api import Group, IndepVarComp
+
+#from whirly_bird_optimization.aerodynamics_geom_group import AerodynamicsGeomGroup
+#from whirly_bird_optimization.cruise_aero_group import CruiseAeroGroup
+from whirly_bird_optimization.cruise_lift_drag_group import CruiseLiftDragGroup
+
 import numpy as np
 import openmdao.api as om
 
@@ -8,10 +14,9 @@ from openaerostruct.geometry.geometry_group import Geometry
 from openaerostruct.aerodynamics.aero_groups import AeroPoint
 
 from .aerodynamics_geometry_group import AerodynamicsGeometryGroup
-from hover_velocity_group import HoverVelocityGroup
 
 
-class HoverAerodynamicsGroup(Group):
+class CruiseAerodynamicsGroup(Group):
     def initialize(self):
         self.options.declare('shape',types=tuple)
 
@@ -24,7 +29,7 @@ class HoverAerodynamicsGroup(Group):
         # self.add_subsystem('aerodynamics_geom_group', group, promotes=['*'])
 
         indep_var_comp = om.IndepVarComp()
-        indep_var_comp.add_output('hover_drag_velocity', units='m/s')
+        indep_var_comp.add_output('v', val=50, units='m/s')
         indep_var_comp.add_output('Mach_number', val=0.3)
         indep_var_comp.add_output('re', val=1.e6, units='1/m')
         indep_var_comp.add_output('rho', val=1.225, units='kg/m**3')
@@ -86,3 +91,14 @@ class HoverAerodynamicsGroup(Group):
 
         self.connect('wing_span', 'wing.mesh.stretch.span')
         self.connect('oas_wing_chord', 'wing.mesh.scale_x.chord')
+
+
+        # group = CruiseAeroGroup(
+        #     shape=shape
+        # )
+        # self.add_subsystem('cruise_aero_group', group, promotes=['*'])
+
+        group = CruiseLiftDragGroup(
+            shape=shape
+        )
+        self.add_subsystem('cruise_lift_drag_group', group, promotes=['*'])

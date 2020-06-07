@@ -19,7 +19,7 @@ class VerticalShaftPower(Group):
             coeff = 1.,
             powers_dict = dict(
                 vertical_torque = 1.,
-                hover_propellor_angular_speed = 1.,
+                hover_wing_angular_speed = 1.,
             )
         )
         self.add_subsystem('vertical_shaft_power_comp', comp, promotes = ['*'])

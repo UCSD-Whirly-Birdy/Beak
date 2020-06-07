@@ -30,7 +30,7 @@ class HoverVelocityGroup(Group):
         shape = self.options['shape']
 
         comp = IndepVarComp()
-        comp.add_output('hover_RPM')
+        comp.add_output('hover_wing_angular_speed')
         # if design variable, add as output in IVC
         self.add_subsystem('inputs_comp', comp, promotes = ['*'])
 
@@ -48,10 +48,10 @@ class HoverVelocityGroup(Group):
 
         comp = PowerCombinationComp(
             shape=shape,
-            coeff = 2. * np.pi / 60. * .75,
+            coeff = 1 / 60. * .75,
             out_name='hover_drag_velocity',
             powers_dict=dict(
-                hover_RPM = 1.,
+                hover_wing_angular_speed = 1.,
                 radius = 1.,
             )
         )
@@ -59,10 +59,10 @@ class HoverVelocityGroup(Group):
 
         comp = PowerCombinationComp(
             shape=shape,
-            coeff = 2. * np.pi / 60.,
+            coeff = 1 / 60.,
             out_name='hover_torque_velocity',
             powers_dict=dict(
-                hover_RPM = 1.,
+                hover_wing_angular_speed = 1.,
                 radius = 1.,
             )
         )

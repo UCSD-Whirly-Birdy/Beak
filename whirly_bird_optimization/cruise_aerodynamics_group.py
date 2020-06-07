@@ -30,6 +30,10 @@ class CruiseAerodynamicsGroup(Group):
         indep_var_comp.add_output('rho')
         indep_var_comp.add_output('cg', val=np.zeros((3)), units='m')
         indep_var_comp.add_output('alpha', val = 2.)
+        indep_var_comp.add_output('beta', val = 0.)
+        indep_var_comp.add_output('xshear', val = np.zeros((9)))
+        indep_var_comp.add_output('yshear', val = np.zeros((9)))
+        indep_var_comp.add_output('zshear', val = np.zeros((9)))
 
         self.add_subsystem('inputs_comp', indep_var_comp, promotes=['*'])
         shape = (1,)
@@ -41,6 +45,9 @@ class CruiseAerodynamicsGroup(Group):
                     'symmetry' : True,
                     'chord': 0.1,
                     'span' : 1.,
+                    'xshear' : 0.,
+                    'yshear' : 0.,
+                    'zshear' : 0.,
                     }
 
         mesh = generate_mesh(mesh_dict)
@@ -59,6 +66,8 @@ class CruiseAerodynamicsGroup(Group):
                     'with_wave' : False,
                     'sweep' : 0.,
                     'alpha' : 0.,
+                    'taper' : 0.,
+                    'dihedral' : 0.,
                     }
 
         geom_group = Geometry(surface=surface)

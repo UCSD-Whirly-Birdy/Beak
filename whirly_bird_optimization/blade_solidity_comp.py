@@ -11,10 +11,10 @@ class BladeSolidity(Group):
     def setup(self):
         shape = self.options['shape']
         
-        comp = IndepVarComp()
-        comp.add_output('wing_span')
-        comp.add_output('wing_area')
-        self.add_subsystem('inputs_comp', comp, promotes=['*'])
+        # comp = IndepVarComp()
+        # comp.add_output('wing_span')
+        # comp.add_output('wing_area')
+        # self.add_subsystem('inputs_comp', comp, promotes=['*'])
 
         # sigma = 8 * S / pi / b
         comp = PowerCombinationComp(

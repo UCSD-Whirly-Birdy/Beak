@@ -72,6 +72,7 @@ prob.model.connect('hover_analysis_group.hover_aerodynamics_group.xshear', 'hove
 prob.model.connect('hover_analysis_group.hover_aerodynamics_group.yshear', 'hover_analysis_group.hover_aerodynamics_group.wing.mesh.shear_y.yshear')
 prob.model.connect('hover_analysis_group.hover_aerodynamics_group.zshear', 'hover_analysis_group.hover_aerodynamics_group.wing.mesh.shear_z.zshear')
 prob.model.connect('hover_analysis_group.atmosphere_group.sonic_speed', 'hover_analysis_group.hover_propulsion_group.rotational_rotor_group.sonic_speed')
+prob.model.connect('hover_analysis_group.hover_velocity_group.hover_wing_angular_speed', 'hover_analysis_group_hover_propulsion_group.rotational_motor_group.angular_speed')
 
 
 # design variables connections (connections from global variables to design variables throughout model)
@@ -106,7 +107,7 @@ prob['cruise_analysis_group.cruise_propulsion_group.outer_diameter'] = 0.0279
 
 # # # Setup problem and add design variables, constraint, and objective
 # prob.model.add_design_var('twist_cp', lower=-20., upper=20.)
-# prob.model.add_design_var('sweep', lower=0., upper=60.)
+prob.model.add_design_var('cruise_analysis_group.cruise_aerodynamics_group.wing.sweep', lower=0., upper=60.)
 # prob.model.add_design_var('AR', lower=4., upper=16.)
 # prob.model.add_design_var('wing_area', lower=0.05, upper=0.1)
 # prob.model.add_design_var('alpha', lower=0., upper=10.)
@@ -124,28 +125,27 @@ prob.model.list_outputs(prom_name=True)
 
 # set up optimization problem
 
-# prob.driver = om.ScipyOptimizeDriver()
-# prob.driver.options['optimizer'] = 'SLSQP' # options include: [‘Powell’, ‘CG’, ‘L-BFGS-B’, ‘COBYLA’, ‘shgo’, ‘Nelder-Mead’, ‘basinhopping’, ‘SLSQP’, ‘dual_annealing’, ‘trust-constr’, ‘Newton-CG’, ‘TNC’, ‘BFGS’, ‘differential_evolution’]
-# prob.driver.options['tol'] = 1e-9 # or maybe 1e-6
-# prob.driver.options['disp'] = True
+prob.driver = om.ScipyOptimizeDriver()
+prob.driver.options['optimizer'] = 'SLSQP' # options include: [‘Powell’, ‘CG’, ‘L-BFGS-B’, ‘COBYLA’, ‘shgo’, ‘Nelder-Mead’, ‘basinhopping’, ‘SLSQP’, ‘dual_annealing’, ‘trust-constr’, ‘Newton-CG’, ‘TNC’, ‘BFGS’, ‘differential_evolution’]
+prob.driver.options['tol'] = 1e-9 # or maybe 1e-6
+prob.driver.options['disp'] = True
 
-# recorder = om.SqliteRecorder("aero_wb.db")
-# prob.driver.add_recorder(recorder)
-# prob.driver.recording_options['record_derivatives'] = True
-# prob.driver.recording_options['includes'] = ['*']
+recorder = om.SqliteRecorder("aero_wb.db")
+prob.driver.add_recorder(recorder)
+prob.driver.recording_options['record_derivatives'] = True
+prob.driver.recording_options['includes'] = ['*']
 
 
-# ## set RP as design variable
-# # set RP whre  CM0 - CM1 = 0
-
-# prob.model.add_constraint('L_W', equals=0.)
-# prob.model.add_constraint('T_D', equals=0.)
-# prob.model.add_constraint('NP_CG', lower= 0.)
+prob.model.add_constraint('performance_analysis_group.vertical_cruise', lower=0.)
+prob.model.add_constraint('performance_analysis_group.horizontal_cruise', lower=0.)
+prob.model.add_constraint('performance_analysis_group.static_margin', lower=0., upper=1.)
 # # add constraint about vertical hover minimum
-# prob.model.add_constraint('Weight', equals=.75)
+prob.model.add_constraint('performance_analysis_group.weight', equals=.7)
 # prob.model.add_constraint('wing_span', upper=1.2)
 # ## add constraints and design varaibles 
-# prob.model.add_objective('range', scaler=-1e4)
+prob.model.add_objective('performance_analysis_group.range', scaler=-1e4)
 
+print(prob['performance_analysis_group.range'])
+print(prob['cruise_analysis_group.cruise_aerodynamics_group.wing.sweep'])
 # plot_wing aero_wb.db to plot wing over iterations
 # plot_wingbox aero_wb.db of CS of airfoil (but produces error, yet to fix)

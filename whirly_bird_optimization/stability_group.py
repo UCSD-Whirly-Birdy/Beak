@@ -7,13 +7,13 @@ from lsdo_aircraft.simple_motor.simple_motor_group import SimpleMotorGroup
 class StabilityGroup(Group):
     def initialize(self):
         self.options.declare('shape',types=tuple)
-        self.options.declare('mac',types=float)
 
     def setup(self):
         shape = self.options['shape']
 
         comp = IndepVarComp()
         # comp.add_output('sweep')
+        comp.add_output('mean_aerodynamic_chord')
         comp.add_output('body_weight_ratio') # weight of wing/total weight
         comp.add_output('wing_weight_ratio') # weight of wing/total weight
         comp.add_output('motor_weight_ratio') # weight of wing/total weight
@@ -30,16 +30,16 @@ class StabilityGroup(Group):
 
         comp = LinearPowerCombinationComp(
             shape=shape,
-            in_names = ['neutral_point','center_of_gravity', 'mac'],
+            in_names = ['neutral_point','center_of_gravity', 'mean_aerodynamic_chord'],
             out_name = 'static_margin',
             terms_list=[
                 (1., dict(
                     neutral_point=1.,
-                    mac=-1.,
+                    mean_aerodynamic_chord=-1.,
                 )),
                 (-1., dict(
                     center_of_gravity=1.,
-                    mac=-1.,
+                    mean_aerodynamic_chord=-1.,
                 )),
             ]
        )

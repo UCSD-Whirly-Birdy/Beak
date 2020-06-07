@@ -9,13 +9,13 @@ class CruiseLiftDragGroup(Group):
     def setup(self):
         shape = self.options['shape']
         
-        comp = IndepVarComp()
-        comp.add_output('C_D')
-        comp.add_output('C_L')
+        # comp = IndepVarComp()
+        # comp.add_output('C_D')
+        # comp.add_output('C_L')
         # comp.add_output('speed')
         # comp.add_output('density')
         # comp.add_output('area')
-        self.add_subsystem('inputs_comp', comp, promotes=['*'])
+        # self.add_subsystem('inputs_comp', comp, promotes=['*'])
 
         # # D = 0.5 * rho * v^2 * C_D * S
         # comp = PowerCombinationComp(

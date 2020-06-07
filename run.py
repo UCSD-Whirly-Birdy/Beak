@@ -6,12 +6,16 @@ from openmdao.api import Problem, Group, IndepVarComp
 from whirly_bird_optimization.cruise_analysis_group import CruiseAnalysisGroup
 from whirly_bird_optimization.hover_analysis_group import HoverAnalysisGroup
 from whirly_bird_optimization.performance_group import PerformanceGroup
-#from whirly_bird_optimization.equilibrium_group import EquilibriumGroup ---> not used here, it's part of performance
 
 n = 1
 shape = (n,n)
 
 prob = Problem()
+
+global_ivc = IndepVarComp()
+global_ivc.add_output('AR')
+global_ivc.add_output('wing_area')
+prob.model.add_subsystem('global_inputs_comp', global_ivc)
 
 cruise_analysis_group = CruiseAnalysisGroup(
     shape = shape,
@@ -31,10 +35,35 @@ performance_group = PerformanceGroup(
 )
 prob.model.add_subsystem('performance_analysis_group', performance_group)
 
+# connections
+
 prob.model.connect('cruise_analysis_group.cruise_propulsion_group.efficiency','performance_analysis_group.efficiency')
 prob.model.connect('cruise_analysis_group.cruise_aerodynamics_group.L_D', 'performance_analysis_group.L_D')
-# prob.model.connect('')
-
+prob.model.connect('cruise_analysis_group.cruise_propulsion_group.thrust', 'performance_analysis_group.thrust_cruise')
+prob.model.connect('cruise_analysis_group.cruise_aerodynamics_group.aero_point.wing_perf.D', 'performance_analysis_group.drag_cruise')
+prob.model.connect('cruise_analysis_group.cruise_aerodynamics_group.aero_point.wing_perf.L', 'performance_analysis_group.lift_cruise')
+prob.model.connect('cruise_analysis_group.cruise_aerodynamics_group.wing_chord', 'performance_analysis_group.chord')
+prob.model.connect('cruise_analysis_group.cruise_aerodynamics_group.wing_span', ['performance_analysis_group.wing_span', 'cruise_analysis_group.cruise_propulsion_group.wing_span', 'hover_analysis_group.hover_velocity_group.wing_span', 'hover_analysis_group.hover_propulsion_group.wing_span'])
+prob.model.connect('cruise_analysis_group.cruise_aerodynamics_group.aero_point.CL', 'cruise_analysis_group.cruise_aerodynamics_group.C_L')
+prob.model.connect('hover_analysis_group.hover_aerodynamics_group.aero_point.CL', 'hover_analysis_group.hover_aerodynamics_group.C_L')
+prob.model.connect('cruise_analysis_group.cruise_aerodynamics_group.aero_point.CD', 'cruise_analysis_group.cruise_aerodynamics_group.C_D')
+prob.model.connect('hover_analysis_group.hover_aerodynamics_group.aero_point.CD', 'hover_analysis_group.hover_aerodynamics_group.C_D')
+prob.model.connect('cruise_analysis_group.inputs_comp.speed', 'cruise_analysis_group.cruise_aerodynamics_group.aero_point.v')
+prob.model.connect('hover_analysis_group.inputs_comp.speed', 'hover_analysis_group.hover_aerodynamics_group.aero_point.v')
+prob.model.connect('cruise_analysis_group.atmosphere_group.density', 'cruise_analysis_group.cruise_aerodynamics_group.aero_point.rho')
+prob.model.connect('hover_analysis_group.atmosphere_group.density', 'hover_analysis_group.hover_aerodynamics_group.aero_point.rho')
+prob.model.connect('cruise_analysis_group.atmosphere_group.mach_number', 'cruise_analysis_group.cruise_aerodynamics_group.aero_point.Mach_number')
+prob.model.connect('hover_analysis_group.atmosphere_group.mach_number', 'hover_analysis_group.hover_aerodynamics_group.aero_point.Mach_number')
+prob.model.connect('cruise_analysis_group.cruise_aerodynamics_group.area', ['cruise_analysis_group.cruise_propulsion_group.wing_area', 'hover_analysis_group.hover_propulsion_group.wing_area'])
+prob.model.connect('cruise_analysis_group.cruise_aerodynamics_group.beta', 'cruise_analysis_group.cruise_aerodynamics_group.aero_point.beta')
+prob.model.connect('hover_analysis_group.hover_aerodynamics_group.beta', 'hover_analysis_group.hover_aerodynamics_group.aero_point.beta')
+prob.model.connect('cruise_analysis_group.cruise_aerodynamics_group.wing.sweep', ['performance_analysis_group.sweep', 'hover_analysis_group.hover_velocity_group.sweep'])
+prob.model.connect('cruise_analysis_group.cruise_aerodynamics_group.xshear', 'cruise_analysis_group.cruise_aerodynamics_group.wing.mesh.shear_x.xshear')
+prob.model.connect('cruise_analysis_group.cruise_aerodynamics_group.yshear', 'cruise_analysis_group.cruise_aerodynamics_group.wing.mesh.shear_y.yshear')
+prob.model.connect('cruise_analysis_group.cruise_aerodynamics_group.zshear', 'cruise_analysis_group.cruise_aerodynamics_group.wing.mesh.shear_z.zshear')
+prob.model.connect('hover_analysis_group.hover_aerodynamics_group.xshear', 'hover_analysis_group.hover_aerodynamics_group.wing.mesh.shear_x.xshear')
+prob.model.connect('hover_analysis_group.hover_aerodynamics_group.yshear', 'hover_analysis_group.hover_aerodynamics_group.wing.mesh.shear_y.yshear')
+prob.model.connect('hover_analysis_group.hover_aerodynamics_group.zshear', 'hover_analysis_group.hover_aerodynamics_group.wing.mesh.shear_z.zshear')
 
 prob.setup(check=True)
 prob.setup()
@@ -75,6 +104,9 @@ prob.model.list_outputs(prom_name=True)
 # set up optimization problem
 
 # prob.driver = om.ScipyOptimizeDriver()
+# prob.driver.options['optimizer'] = 'SLSQP' # options include: [‘Powell’, ‘CG’, ‘L-BFGS-B’, ‘COBYLA’, ‘shgo’, ‘Nelder-Mead’, ‘basinhopping’, ‘SLSQP’, ‘dual_annealing’, ‘trust-constr’, ‘Newton-CG’, ‘TNC’, ‘BFGS’, ‘differential_evolution’]
+# prob.driver.options['tol'] = 1e-9 # or maybe 1e-6
+# prob.driver.options['disp'] = True
 
 # recorder = om.SqliteRecorder("aero_wb.db")
 # prob.driver.add_recorder(recorder)
@@ -92,41 +124,7 @@ prob.model.list_outputs(prom_name=True)
 # prob.model.add_constraint('Weight', equals=.75)
 # prob.model.add_constraint('wing_span', upper=1.2)
 # ## add constraints and design varaibles 
-# prob.model.add_objective('range', scaler=1e4)
-
-
-## EDIT THIS INTO RUN FILE
-
-
-## - - - - - - - - - - - (maybe write another script for optimization and visualization)
-
-# prob.driver = om.ScipyOptimizeDriver()
-
-# recorder = om.SqliteRecorder("aero_wb.db")
-# prob.driver.add_recorder(recorder)
-# prob.driver.recording_options['record_derivatives'] = True
-# prob.driver.recording_options['includes'] = ['*']
-
-# # # Setup problem and add design variables, constraint, and objective
-# prob.model.add_design_var('wing.twist_cp', lower=-20., upper=20.)
-# prob.model.add_design_var('wing.sweep', lower=0., upper=50.)
-# prob.model.add_design_var('wing.alpha', lower=0., upper=10.)
-# prob.model.add_constraint('laura.wing_perf.CL', equals=0.5)
-# ## add constraints and design varaibles 
-# prob.model.add_objective('laura.wing_perf.CD', scaler=1e4)
-
-# Set up the problem
-#prob.setup()
-# prob.run_model()
-# prob.model.list_outputs(prom_name=True)
-# prob.model.list_inputs(prom_name=True)
-
-# print("\nWing CL:", prob['laura.wing_perf.CL'])
-# print("Wing CD:", prob['laura.wing_perf.CD'])
-# print("Wing Sweep:", prob['wing.sweep'])
-# print("Wing Alpha:", prob['laura.alpha'])
-# print("Wing Twist Cp:", prob['wing.twist_cp'])
-# print("CoG:", prob['laura.cg'])
+# prob.model.add_objective('range', scaler=-1e4)
 
 # plot_wing aero_wb.db to plot wing over iterations
 # plot_wingbox aero_wb.db of CS of airfoil (but produces error, yet to fix)

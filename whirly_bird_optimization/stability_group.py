@@ -13,7 +13,7 @@ class StabilityGroup(Group):
         shape = self.options['shape']
 
         comp = IndepVarComp()
-        comp.add_output('sweep')
+        # comp.add_output('sweep')
         comp.add_output('body_weight_ratio') # weight of wing/total weight
         comp.add_output('wing_weight_ratio') # weight of wing/total weight
         comp.add_output('motor_weight_ratio') # weight of wing/total weight

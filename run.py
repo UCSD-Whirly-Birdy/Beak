@@ -74,6 +74,13 @@ prob.model.connect('hover_analysis_group.hover_aerodynamics_group.zshear', 'hove
 prob.model.connect('hover_analysis_group.atmosphere_group.sonic_speed', 'hover_analysis_group.hover_propulsion_group.rotational_rotor_group.sonic_speed')
 # prob.model.connect('hover_analysis_group.hover_velocity_group.hover_wing_angular_speed', 'hover_analysis_group_hover_propulsion_group.rotational_motor_group.angular_speed')
 
+# new connections to be integrated into others
+prob.model.connect('hover_analysis_group.hover_propulsion_group.vertical_shaft_power','hover_analysis_group.hover_propulsion_group.vertical_rotor_group.shaft_power')
+prob.model.connect('hover_analysis_group.hover_velocity_group.hover_wing_angular_speed','hover_analysis_group.hover_propulsion_group.hover_wing_angular_speed')
+prob.model.connect('hover_analysis_group.hover_aerodynamics_group.aero_point.wing_perf.D','hover_analysis_group.hover_propulsion_group.drag')
+prob.model.connect('cruise_analysis_group.cruise_aerodynamics_group.wing.sweep','hover_analysis_group.hover_propulsion_group.sweep')
+prob.model.connect('hover_analysis_group.hover_propulsion_group.rotational_rotor_group.thrust','hover_analysis_group.hover_propulsion_group.thrust')
+
 
 # design variables connections (connections from global variables to design variables throughout model)
 

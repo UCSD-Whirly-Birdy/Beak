@@ -9,13 +9,6 @@ class VerticalShaftPower(Group):
     def setup(self):
         shape = self.options['shape']
 
-        comp = IndepVarComp()
-        comp.add_output('sweep')
-        comp.add_output('wing_span')
-        comp.add_output('thrust') # thrust from props in hover
-        comp.add_output('drag') # drag from wing in hover
-        self.add_subsystem('inputs_comp', comp, promotes = ['*'])
-
         comp = ExecComp('vertical_torque = thrust * wing_span' + 
         '- drag * wing_span / cos(sweep*pi/180) * .75', shape=shape)
         self.add_subsystem('vertical_torque_comp', comp, promotes = ['*'])

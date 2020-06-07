@@ -72,7 +72,7 @@ prob.model.connect('hover_analysis_group.hover_aerodynamics_group.xshear', 'hove
 prob.model.connect('hover_analysis_group.hover_aerodynamics_group.yshear', 'hover_analysis_group.hover_aerodynamics_group.wing.mesh.shear_y.yshear')
 prob.model.connect('hover_analysis_group.hover_aerodynamics_group.zshear', 'hover_analysis_group.hover_aerodynamics_group.wing.mesh.shear_z.zshear')
 prob.model.connect('hover_analysis_group.atmosphere_group.sonic_speed', 'hover_analysis_group.hover_propulsion_group.rotational_rotor_group.sonic_speed')
-prob.model.connect('hover_analysis_group.hover_velocity_group.hover_wing_angular_speed', 'hover_analysis_group_hover_propulsion_group.rotational_motor_group.angular_speed')
+# prob.model.connect('hover_analysis_group.hover_velocity_group.hover_wing_angular_speed', 'hover_analysis_group_hover_propulsion_group.rotational_motor_group.angular_speed')
 
 
 # design variables connections (connections from global variables to design variables throughout model)
@@ -145,7 +145,7 @@ prob.model.add_constraint('performance_analysis_group.weight', equals=.7)
 # ## add constraints and design varaibles 
 prob.model.add_objective('performance_analysis_group.range', scaler=-1e4)
 
-print(prob['performance_analysis_group.range'])
-print(prob['cruise_analysis_group.cruise_aerodynamics_group.wing.sweep'])
+print('Range:', prob['performance_analysis_group.range'])
+print('Sweep Angle:', prob['cruise_analysis_group.cruise_aerodynamics_group.wing.sweep'])
 # plot_wing aero_wb.db to plot wing over iterations
 # plot_wingbox aero_wb.db of CS of airfoil (but produces error, yet to fix)

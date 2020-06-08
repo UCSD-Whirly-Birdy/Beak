@@ -32,6 +32,7 @@ class HoverPropulsionGroup(Group):
         group = PropellerShaftPowerGroup(
             shape = shape,
         )
+
         self.add_subsystem('propeller_shaft_power_group', group, promotes = ['*'])
 
         simple_rotor_1 = SimpleRotor(

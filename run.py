@@ -72,7 +72,7 @@ prob.model.connect('hover_analysis_group.hover_aerodynamics_group.xshear', 'hove
 prob.model.connect('hover_analysis_group.hover_aerodynamics_group.yshear', 'hover_analysis_group.hover_aerodynamics_group.wing.mesh.shear_y.yshear')
 prob.model.connect('hover_analysis_group.hover_aerodynamics_group.zshear', 'hover_analysis_group.hover_aerodynamics_group.wing.mesh.shear_z.zshear')
 prob.model.connect('hover_analysis_group.atmosphere_group.sonic_speed', 'hover_analysis_group.hover_propulsion_group.rotational_rotor_group.sonic_speed')
-prob.model.connect('hover_analysis_group.hover_velocity_group.hover_wing_angular_speed', 'hover_analysis_group_hover_propulsion_group.rotational_motor_group.angular_speed')
+# prob.model.connect('hover_analysis_group.hover_velocity_group.hover_wing_angular_speed', 'hover_analysis_group_hover_propulsion_group.rotational_motor_group.angular_speed')
 
 # new connections to be integrated into others
 prob.model.connect('hover_analysis_group.hover_propulsion_group.vertical_shaft_power','hover_analysis_group.hover_propulsion_group.vertical_rotor_group.shaft_power')
@@ -80,6 +80,8 @@ prob.model.connect('hover_analysis_group.hover_velocity_group.hover_wing_angular
 prob.model.connect('hover_analysis_group.hover_aerodynamics_group.aero_point.wing_perf.D','hover_analysis_group.hover_propulsion_group.drag')
 prob.model.connect('cruise_analysis_group.cruise_aerodynamics_group.wing.sweep','hover_analysis_group.hover_propulsion_group.sweep')
 prob.model.connect('hover_analysis_group.hover_propulsion_group.rotational_rotor_group.thrust','hover_analysis_group.hover_propulsion_group.thrust')
+prob.model.connect('hover_analysis_group.hover_propulsion_group.propeller_shaft_power','hover_analysis_group.hover_propulsion_group.rotational_rotor_group.shaft_power')
+prob.model.connect('cruise_analysis_group.cruise_propulsion_group.propeller_shaft_power','cruise_analysis_group.cruise_propulsion_group.shaft_power')
 
 
 # design variables connections (connections from global variables to design variables throughout model)
@@ -103,14 +105,14 @@ prob['hover_analysis_group.inputs_comp.altitude'] = 100.
 prob['cruise_analysis_group.inputs_comp.speed'] = 50.
 prob['hover_analysis_group.inputs_comp.speed'] = 1.
 
-prob['cruise_analysis_group.cruise_propulsion_group.mass'] = 0.03
+# prob['cruise_analysis_group.cruise_propulsion_group.mass'] = 0.03
 prob['cruise_analysis_group.cruise_propulsion_group.rotor_group.inputs_comp.radius_scalar'] = 0.127
 
-prob['cruise_analysis_group.cruise_propulsion_group.normalized_torque'] = 1.
-prob['cruise_analysis_group.cruise_propulsion_group.angular_speed'] = 1500.
-prob['cruise_analysis_group.cruise_propulsion_group.stator_diameter'] = 0.022
-prob['cruise_analysis_group.cruise_propulsion_group.shaft_diameter'] = 0.003
-prob['cruise_analysis_group.cruise_propulsion_group.outer_diameter'] = 0.0279
+# prob['cruise_analysis_group.cruise_propulsion_group.normalized_torque'] = 1.
+# prob['cruise_analysis_group.cruise_propulsion_group.angular_speed'] = 1500.
+# prob['cruise_analysis_group.cruise_propulsion_group.stator_diameter'] = 0.022
+# prob['cruise_analysis_group.cruise_propulsion_group.shaft_diameter'] = 0.003
+# prob['cruise_analysis_group.cruise_propulsion_group.outer_diameter'] = 0.0279
 
 # # # Setup problem and add design variables, constraint, and objective
 # prob.model.add_design_var('twist_cp', lower=-20., upper=20.)
@@ -127,8 +129,8 @@ prob.model.add_design_var('cruise_analysis_group.cruise_aerodynamics_group.wing.
 
 prob.run_model()
 
-# prob.model.list_inputs(prom_name=True)
-prob.model.list_outputs(prom_name=True)
+prob.model.list_inputs(prom_name=True)
+# prob.model.list_outputs(prom_name=True)
 
 # set up optimization problem
 

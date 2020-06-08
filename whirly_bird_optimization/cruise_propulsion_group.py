@@ -9,6 +9,7 @@ from lsdo_aircraft.simple_motor.simple_motor_group import SimpleMotorGroup
 
 from .aerodynamics_geometry_group import AerodynamicsGeometryGroup
 from .blade_solidity_comp import BladeSolidity
+from .propeller_shaft_power_comp import PropellerShaftPower
 
 class CruisePropulsionGroup(Group):
 
@@ -25,14 +26,19 @@ class CruisePropulsionGroup(Group):
         )
         self.add_subsystem('blade_solidity_comp', comp, promotes=['*'])
         
-        simple_motor = SimpleMotor(
-        name='glauert_model',
+        # simple_motor = SimpleMotor(
+        # name='glauert_model',
+        # )
+        # group = SimpleMotorGroup(
+        #     shape=shape,
+        #     options_dictionary=simple_motor,
+        #     )
+        # self.add_subsystem('motor_group', group, promotes=['*'])
+
+        group = PropellerShaftPower(
+            shape = shape,
         )
-        group = SimpleMotorGroup(
-            shape=shape,
-            options_dictionary=simple_motor,
-            )
-        self.add_subsystem('motor_group', group, promotes=['*'])
+        self.add_subsystem('propeller_shaft_power', group, promotes = ['*'])
 
         simple_rotor = SimpleRotor(
             name='glauert_model',

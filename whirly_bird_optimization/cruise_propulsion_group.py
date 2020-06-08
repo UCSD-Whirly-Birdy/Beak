@@ -20,6 +20,13 @@ class CruisePropulsionGroup(Group):
         shape = self.options['shape']
         #mode = self.options['mode']
 
+
+        comp = BladeSolidity(
+            shape=shape
+        )
+        self.add_subsystem('blade_solidity_comp', comp, promotes=['*'])
+        
+
         # simple_motor = SimpleMotor(
         # name='glauert_model',
         # )

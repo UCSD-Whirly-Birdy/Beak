@@ -12,8 +12,8 @@ shape = (n,n)
 
 prob = Problem()
 
-# global_ivc = IndepVarComp()
-# global_ivc.add_output('AR')
+global_ivc = IndepVarComp()
+global_ivc.add_output('AR')
 # global_ivc.add_output('wing_area')
 # global_ivc.add_output('sweep')
 # global_ivc.add_output('alpha')
@@ -22,7 +22,7 @@ prob = Problem()
 # global_ivc.add_output('hover_wing_angular_speed')
 # global_ivc.add_output('twist')
 # global_ivc.add_output('hover_propellor_angular_speed')
-# prob.model.add_subsystem('global_inputs_comp', global_ivc, promotes=['*'])
+prob.model.add_subsystem('global_inputs_comp', global_ivc, promotes=['*'])
 
 cruise_analysis_group = CruiseAnalysisGroup(
     shape = shape,
@@ -75,7 +75,7 @@ prob.model.connect('hover_analysis_group.atmosphere_group.sonic_speed', 'hover_a
 prob.model.connect('hover_analysis_group.hover_propulsion_group.vertical_torque', 'performance_analysis_group.vertical_torque')
 prob.model.connect('hover_analysis_group.hover_propulsion_group.vertical_rotor_group.thrust','performance_analysis_group.lift_hover')
 
-
+# prob.model.connect('hover_analysis_group.hover_velocity_group.hover_wing_angular_speed', 'hover_analysis_group_hover_propulsion_group.rotational_motor_group.angular_speed')
 # prob.model.connect('cruise_analysis_group.cruise_aerodynamics_group.wing.twist_cp', 'hover_analysis_group.hover_aerodynamics_group.wing.twist_cp')
 
 # new connections to be integrated into others

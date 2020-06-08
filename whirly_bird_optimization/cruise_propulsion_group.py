@@ -27,6 +27,8 @@ class CruisePropulsionGroup(Group):
         
         simple_motor = SimpleMotor(
         name='glauert_model',
+        specific_power_kW_kg=8.,
+        number_of_poles_per_phase=6.,
         )
         group = SimpleMotorGroup(
             shape=shape,

@@ -45,9 +45,9 @@ class ForceBalanceGroup(Group):
 
         comp = LinearCombinationComp(
             shape=shape,
-            in_names = ['thrust_torque_hover','drag_torque_hover'],
+            in_names = ['vertical_torque'],
             out_name = 'rotational_hover',
-            coeffs = [1., -1.],
+            coeffs = [1.],
         )
         self.add_subsystem('rotational_hover_comp',comp, promotes = ['*'])
         

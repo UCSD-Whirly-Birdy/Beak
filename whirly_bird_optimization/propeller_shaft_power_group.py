@@ -2,7 +2,7 @@ import numpy as np
 from openmdao.api import Group, IndepVarComp
 from lsdo_utils.api import PowerCombinationComp
 
-class PropellerShaftPower(Group):
+class PropellerShaftPowerGroup(Group):
     def initialize(self):
         self.options.declare('shape', types=tuple)
 

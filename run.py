@@ -126,8 +126,9 @@ prob.model.add_design_var('cruise_analysis_group.cruise_aerodynamics_group.wing.
 
 prob.run_model()
 
-prob.model.list_inputs(prom_name=True)
 # prob.model.list_outputs(prom_name=True)
+#prob.model.list_inputs(prom_name=True)
+
 
 # set up optimization problem
 

@@ -1,9 +1,9 @@
-from openmdao.api import ExplicitComponent, IndepVarComp
+from openmdao.api import Group, IndepVarComp
 from lsdo_utils.api import PowerCombinationComp
 import numpy as np
 
 
-class BladeSolidity(ExplicitComponent):
+class BladeSolidity(Group):
 
     def initialize(self):
          self.options.declare('shape', types=tuple)

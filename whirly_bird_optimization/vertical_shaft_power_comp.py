@@ -21,6 +21,7 @@ class VerticalShaftPower(Group):
             out_name = 'vertical_torque',
             coeffs = [1., -1.]
         )
+
         self.add_subsystem('vertical_torque_comp', comp, promotes=['*'])
 
         comp = PowerCombinationComp(

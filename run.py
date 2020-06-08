@@ -72,6 +72,8 @@ prob.model.connect('hover_analysis_group.hover_aerodynamics_group.xshear', 'hove
 prob.model.connect('hover_analysis_group.hover_aerodynamics_group.yshear', 'hover_analysis_group.hover_aerodynamics_group.wing.mesh.shear_y.yshear')
 prob.model.connect('hover_analysis_group.hover_aerodynamics_group.zshear', 'hover_analysis_group.hover_aerodynamics_group.wing.mesh.shear_z.zshear')
 prob.model.connect('hover_analysis_group.atmosphere_group.sonic_speed', 'hover_analysis_group.hover_propulsion_group.rotational_rotor_group.sonic_speed')
+
+# prob.model.connect('hover_analysis_group.hover_velocity_group.hover_wing_angular_speed', 'hover_analysis_group_hover_propulsion_group.rotational_motor_group.angular_speed')
 prob.model.connect('hover_analysis_group.hover_propulsion_group.vertical_torque', 'performance_analysis_group.vertical_torque')
 prob.model.connect('hover_analysis_group.hover_propulsion_group.vertical_rotor_group.thrust','performance_analysis_group.lift_hover')
 
@@ -84,6 +86,8 @@ prob.model.connect('hover_analysis_group.hover_velocity_group.hover_wing_angular
 prob.model.connect('hover_analysis_group.hover_aerodynamics_group.aero_point.wing_perf.D','hover_analysis_group.hover_propulsion_group.drag')
 prob.model.connect('cruise_analysis_group.cruise_aerodynamics_group.wing.sweep','hover_analysis_group.hover_propulsion_group.sweep')
 prob.model.connect('hover_analysis_group.hover_propulsion_group.rotational_rotor_group.thrust','hover_analysis_group.hover_propulsion_group.thrust')
+prob.model.connect('hover_analysis_group.hover_propulsion_group.propeller_shaft_power','hover_analysis_group.hover_propulsion_group.rotational_rotor_group.shaft_power')
+prob.model.connect('cruise_analysis_group.cruise_propulsion_group.propeller_shaft_power','cruise_analysis_group.cruise_propulsion_group.shaft_power')
 
 # prob.model.connect('AR', ['cruise_analysis_group.cruise_aerodynamics_group.AR', 'hover_analysis_group.hover_aerodynamics_group.AR'])
 # prob.model.connect('wing_area', ['cruise_analysis_group.cruise_aerodynamics_group.area', 'hover_analysis_group.hover_aerodynamics_group.area'])
@@ -104,8 +108,52 @@ prob['hover_analysis_group.inputs_comp.altitude'] = 100.
 prob['cruise_analysis_group.inputs_comp.speed'] = 50.
 prob['hover_analysis_group.inputs_comp.speed'] = 1.
 
-prob['cruise_analysis_group.cruise_propulsion_group.mass'] = 0.03
+# prob['cruise_analysis_group.cruise_propulsion_group.mass'] = 0.03
 prob['cruise_analysis_group.cruise_propulsion_group.rotor_group.inputs_comp.radius_scalar'] = 0.127
+
+# # # Setup problem and add design variables, constraint, and objective
+# prob.model.add_design_var('twist_cp', lower=-20., upper=20.)
+prob.model.add_design_var('cruise_analysis_group.cruise_aerodynamics_group.wing.sweep', lower=0., upper=60.)
+# prob.model.add_design_var('AR', lower=4., upper=16.)
+# prob.model.add_design_var('wing_area', lower=0.05, upper=0.1)
+# prob.model.add_design_var('alpha', lower=0., upper=10.)
+# prob.model.add_design_var('power_coefficient', lower=0., upper=0.8)
+# prob.model.add_design_var('propeller_diameter', lower=0.1, upper=1.2)
+# prob.model.add_design_var('angular_speed', lower=0., upper=3000)
+# prob.model.add_design_var('hover_RPM', lower=400., upper=600.)
+# prob.model.add_design_var('ref_point', lower=0.,upper=prob['wing_span']/2*np.tan(prob['sweep']*np.pi/180) + prob['chord']) 
+# # need to set upper limit of ref_point as c + b/2*tan(sweep*pi/180)
+
+prob.run_model()
+
+prob.model.list_inputs(prom_name=True)
+# prob.model.list_outputs(prom_name=True)
+
+# set up optimization problem
+
+prob.driver = om.ScipyOptimizeDriver()
+prob.driver.options['optimizer'] = 'SLSQP' # options include: [‘Powell’, ‘CG’, ‘L-BFGS-B’, ‘COBYLA’, ‘shgo’, ‘Nelder-Mead’, ‘basinhopping’, ‘SLSQP’, ‘dual_annealing’, ‘trust-constr’, ‘Newton-CG’, ‘TNC’, ‘BFGS’, ‘differential_evolution’]
+prob.driver.options['tol'] = 1e-9 # or maybe 1e-6
+prob.driver.options['disp'] = True
+
+recorder = om.SqliteRecorder("aero_wb.db")
+prob.driver.add_recorder(recorder)
+prob.driver.recording_options['record_derivatives'] = True
+prob.driver.recording_options['includes'] = ['*']
+
+
+prob.model.add_constraint('performance_analysis_group.vertical_cruise', lower=0.)
+prob.model.add_constraint('performance_analysis_group.horizontal_cruise', lower=0.)
+prob.model.add_constraint('performance_analysis_group.static_margin', lower=0., upper=1.)
+# # add constraint about vertical hover minimum
+prob.model.add_constraint('performance_analysis_group.weight', equals=.7)
+# prob.model.add_constraint('wing_span', upper=1.2)
+# ## add constraints and design varaibles 
+prob.model.add_objective('performance_analysis_group.range', scaler=-1e4)
+
+print(prob['performance_analysis_group.range'])
+print(prob['cruise_analysis_group.cruise_aerodynamics_group.wing.sweep'])
+
 prob['cruise_analysis_group.cruise_propulsion_group.normalized_torque'] = 1.
 prob['cruise_analysis_group.cruise_propulsion_group.angular_speed'] = 1500.
 prob['cruise_analysis_group.cruise_propulsion_group.stator_diameter'] = 0.022
@@ -155,5 +203,6 @@ prob['cruise_analysis_group.cruise_propulsion_group.outer_diameter'] = 0.0279
 # print('Sweep Angle:', prob['cruise_analysis_group.cruise_aerodynamics_group.wing.sweep'])
 # print('AR:', prob['cruise_analysis_group.cruise_aerodynamics_group.aerodynamics_geometry_group.inputs_comp.AR'])
 # print('Wing Area:', prob['cruise_analysis_group.cruise_aerodynamics_group.area'])
+
 # plot_wing aero_wb.db to plot wing over iterations
 # plot_wingbox aero_wb.db of CS of airfoil (but produces error, yet to fix)

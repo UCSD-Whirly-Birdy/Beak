@@ -50,7 +50,7 @@ prob.model.connect('cruise_analysis_group.cruise_propulsion_group.thrust', 'perf
 prob.model.connect('cruise_analysis_group.cruise_aerodynamics_group.aero_point.wing_perf.D', 'performance_analysis_group.drag_cruise')
 prob.model.connect('cruise_analysis_group.cruise_aerodynamics_group.aero_point.wing_perf.L', 'performance_analysis_group.lift_cruise')
 prob.model.connect('cruise_analysis_group.cruise_aerodynamics_group.wing_chord', ['performance_analysis_group.chord', 'performance_analysis_group.mean_aerodynamic_chord'])
-prob.model.connect('cruise_analysis_group.cruise_aerodynamics_group.wing_span', ['performance_analysis_group.wing_span', 'cruise_analysis_group.cruise_propulsion_group.wing_span', 'hover_analysis_group.hover_velocity_group.wing_span', 'hover_analysis_group.hover_propulsion_group.wing_span'])
+prob.model.connect('cruise_analysis_group.cruise_aerodynamics_group.wing_span', ['performance_analysis_group.wing_span', 'hover_analysis_group.hover_velocity_group.wing_span', 'hover_analysis_group.hover_propulsion_group.wing_span'])
 prob.model.connect('cruise_analysis_group.cruise_aerodynamics_group.aero_point.CL', 'cruise_analysis_group.cruise_aerodynamics_group.C_L')
 prob.model.connect('hover_analysis_group.hover_aerodynamics_group.aero_point.CL', 'hover_analysis_group.hover_aerodynamics_group.C_L')
 prob.model.connect('cruise_analysis_group.cruise_aerodynamics_group.aero_point.CD', 'cruise_analysis_group.cruise_aerodynamics_group.C_D')
@@ -61,7 +61,7 @@ prob.model.connect('cruise_analysis_group.atmosphere_group.density', 'cruise_ana
 prob.model.connect('hover_analysis_group.atmosphere_group.density', ['hover_analysis_group.hover_aerodynamics_group.aero_point.rho', 'hover_analysis_group.hover_propulsion_group.rotational_rotor_group.density'])
 prob.model.connect('cruise_analysis_group.atmosphere_group.mach_number', 'cruise_analysis_group.cruise_aerodynamics_group.aero_point.Mach_number')
 prob.model.connect('hover_analysis_group.atmosphere_group.mach_number', 'hover_analysis_group.hover_aerodynamics_group.aero_point.Mach_number')
-prob.model.connect('cruise_analysis_group.cruise_aerodynamics_group.area', ['cruise_analysis_group.cruise_propulsion_group.wing_area', 'hover_analysis_group.hover_propulsion_group.wing_area'])
+# prob.model.connect('cruise_analysis_group.cruise_aerodynamics_group.area', ['hover_analysis_group.hover_propulsion_group.wing_area'])
 prob.model.connect('cruise_analysis_group.cruise_aerodynamics_group.beta', 'cruise_analysis_group.cruise_aerodynamics_group.aero_point.beta')
 prob.model.connect('hover_analysis_group.hover_aerodynamics_group.beta', 'hover_analysis_group.hover_aerodynamics_group.aero_point.beta')
 prob.model.connect('cruise_analysis_group.cruise_aerodynamics_group.wing.sweep', ['performance_analysis_group.sweep', 'hover_analysis_group.hover_velocity_group.sweep'])
@@ -154,12 +154,6 @@ prob.model.add_objective('performance_analysis_group.range', scaler=-1e4)
 
 print(prob['performance_analysis_group.range'])
 print(prob['cruise_analysis_group.cruise_aerodynamics_group.wing.sweep'])
-
-prob['cruise_analysis_group.cruise_propulsion_group.normalized_torque'] = 1.
-prob['cruise_analysis_group.cruise_propulsion_group.angular_speed'] = 1500.
-prob['cruise_analysis_group.cruise_propulsion_group.stator_diameter'] = 0.022
-prob['cruise_analysis_group.cruise_propulsion_group.shaft_diameter'] = 0.003
-prob['cruise_analysis_group.cruise_propulsion_group.outer_diameter'] = 0.0279
 
 # # # # # Setup problem and add design variables, constraint, and objective
 # prob.model.add_design_var('cruise_analysis_group.cruise_aerodynamics_group.wing.twist_cp', lower=-20., upper=20.)

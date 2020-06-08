@@ -32,7 +32,7 @@ class HoverAerodynamicsGroup(Group):
         indep_var_comp = om.IndepVarComp()
         #indep_var_comp.add_output('v', val=50, units='m/s')
         #indep_var_comp.add_output('Mach_number', val=0.3)
-        indep_var_comp.add_output('re', val=1.e6, units='1/m')
+        indep_var_comp.add_output('re', val=1.e5, units='1/m')
         #indep_var_comp.add_output('rho', val=1.225, units='kg/m**3')
         indep_var_comp.add_output('cg', val=np.zeros((3)), units='m')
         indep_var_comp.add_output('alpha', val = 2.)

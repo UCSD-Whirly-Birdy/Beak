@@ -9,6 +9,7 @@ from lsdo_aircraft.simple_motor.simple_motor_group import SimpleMotorGroup
 
 #from .aerodynamics_geometry_group import AerodynamicsGeometryGroup
 from .blade_solidity_comp import BladeSolidity
+from .propeller_shaft_power_comp import PropellerShaftPower
 from .vertical_shaft_power_comp import VerticalShaftPower
 
 class HoverPropulsionGroup(Group):
@@ -25,14 +26,19 @@ class HoverPropulsionGroup(Group):
         )
         self.add_subsystem('blade_solidity_comp', comp, promotes=['*'])
         
-        simple_motor = SimpleMotor(
-        name='glauert_model',
+        # simple_motor = SimpleMotor(
+        # name='glauert_model',
+        # )
+        # group = SimpleMotorGroup(
+        #     shape=shape,
+        #     options_dictionary=simple_motor,
+        #     )
+        # self.add_subsystem('rotational_motor_group', group, promotes=['*'])
+
+        group = PropellerShaftPower(
+            shape = shape,
         )
-        group = SimpleMotorGroup(
-            shape=shape,
-            options_dictionary=simple_motor,
-            )
-        self.add_subsystem('rotational_motor_group', group, promotes=['*'])
+        self.add_subsystem('propeller_shaft_power', group, promotes = ['*'])
 
         simple_rotor_1 = SimpleRotor(
             name='glauert_model',
@@ -44,11 +50,6 @@ class HoverPropulsionGroup(Group):
             options_dictionary=simple_rotor_1,
             )
         self.add_subsystem('rotational_rotor_group', group)
-
-        # comp = VerticalShaftPower(
-        #     shape=shape
-        # )
-        # self.add_subsystem('vertical_shaft_power_comp', comp, promotes=['*'])
 
         group = VerticalShaftPower(
             shape = shape,

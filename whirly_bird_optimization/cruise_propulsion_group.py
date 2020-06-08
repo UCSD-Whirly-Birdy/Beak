@@ -8,7 +8,6 @@ from lsdo_aircraft.simple_motor.simple_motor import SimpleMotor
 from lsdo_aircraft.simple_motor.simple_motor_group import SimpleMotorGroup
 
 from .aerodynamics_geometry_group import AerodynamicsGeometryGroup
-from .blade_solidity_comp import BladeSolidity
 from .propeller_shaft_power_comp import PropellerShaftPower
 
 class CruisePropulsionGroup(Group):
@@ -20,12 +19,6 @@ class CruisePropulsionGroup(Group):
     def setup(self):
         shape = self.options['shape']
         #mode = self.options['mode']
-
-        comp = BladeSolidity(
-            shape=shape
-        )
-        self.add_subsystem('blade_solidity_comp', comp, promotes=['*'])
-        
 
         # simple_motor = SimpleMotor(
         # name='glauert_model',

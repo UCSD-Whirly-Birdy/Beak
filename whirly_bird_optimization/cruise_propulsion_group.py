@@ -26,7 +26,6 @@ class CruisePropulsionGroup(Group):
         )
         self.add_subsystem('blade_solidity_comp', comp, promotes=['*'])
         
-
         # simple_motor = SimpleMotor(
         # name='glauert_model',
         # )

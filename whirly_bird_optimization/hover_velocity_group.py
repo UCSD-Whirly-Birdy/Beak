@@ -29,10 +29,10 @@ class HoverVelocityGroup(Group):
     def setup(self):
         shape = self.options['shape']
 
-        comp = IndepVarComp()
-        comp.add_output('hover_wing_angular_speed')
-        # if design variable, add as output in IVC
-        self.add_subsystem('inputs_comp', comp, promotes = ['*'])
+        # comp = IndepVarComp()
+        # comp.add_output('hover_wing_angular_speed')
+        # # if design variable, add as output in IVC
+        # self.add_subsystem('inputs_comp', comp, promotes = ['*'])
 
         # make connections in run_group (aero_geom_group to this one for wing_span)
         

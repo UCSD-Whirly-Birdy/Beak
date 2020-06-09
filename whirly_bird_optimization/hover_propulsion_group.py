@@ -4,6 +4,7 @@ from openmdao.api import Problem, Group, IndepVarComp
 from lsdo_utils.api import PowerCombinationComp
 from lsdo_aircraft.simple_rotor.simple_rotor import SimpleRotor
 from lsdo_aircraft.simple_rotor.simple_rotor_group import SimpleRotorGroup
+from whirly_bird_optimization.modified_simple_rotor_group import ModifiedSimpleRotorGroup
 from lsdo_aircraft.simple_motor.simple_motor import SimpleMotor
 from lsdo_aircraft.simple_motor.simple_motor_group import SimpleMotorGroup
 
@@ -32,7 +33,6 @@ class HoverPropulsionGroup(Group):
         group = PropellerShaftPowerGroup(
             shape = shape,
         )
-
         self.add_subsystem('propeller_shaft_power_group', group, promotes = ['*'])
 
         simple_rotor_1 = SimpleRotor(
@@ -56,7 +56,7 @@ class HoverPropulsionGroup(Group):
             integrated_design_lift_coeff=0.3, 
             blade_solidity=0.15, 
             )
-        group = SimpleRotorGroup(
+        group = ModifiedSimpleRotorGroup(
             shape=shape,
             options_dictionary=simple_rotor_2,
             )

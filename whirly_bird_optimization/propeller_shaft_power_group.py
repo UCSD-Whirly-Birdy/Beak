@@ -24,5 +24,4 @@ class PropellerShaftPowerGroup(Group):
                 current = 1.,
             )
         )
-        # self.add_subsystem('propeller_shaft_power_comp', comp, promotes = ['*'])
         self.add_subsystem('propeller_shaft_power_comp', comp)

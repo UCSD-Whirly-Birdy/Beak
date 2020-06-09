@@ -104,7 +104,9 @@ prob.model.connect('wing_area', ['cruise_analysis_group.cruise_aerodynamics_grou
 # prob.model.connect('sweep', ['cruise_analysis_group.cruise_aerodynamics_group.wing.sweep', 'hover_analysis_group.hover_aerodynamics_group.wing.sweep'])
 # prob.model.connect('cruise_propeller_angular_speed', 'cruise_analysis_group.cruise_propulsion_group.angular_speed')
 # prob.model.connect('power_coefficient', 'cruise_analysis_group.cruise_propulsion_group.power_coeff')
-prob.model.connect('hover_wing_angular_speed', ['hover_analysis_group.hover_velocity_group.hover_wing_angular_speed', 'hover_analysis_group.hover_propulsion_group.vertical_rotor_group.angular_speed', 'hover_analysis_group.hover_propulsion_group.hover_wing_angular_speed'])
+
+prob.model.connect('hover_wing_angular_speed', ['hover_analysis_group.hover_velocity_group.hover_wing_angular_speed', 'hover_analysis_group.hover_propulsion_group.vertical_rotor_group.angular_speed','hover_analysis_group.hover_propulsion_group.hover_wing_angular_speed'])
+
 # prob.model.connect('twist', ['cruise_analysis_group.cruise_aerodynamics_group.wing.twist_cp', 'hover_analysis_group.hover_aerodynamics_group.wing.twist_cp'])
 
 # prob.model.connect('hover_propeller_angular_speed', 'hover_analysis_group.hover_propulsion_group.rotational_rotor_group.angular_speed')
@@ -153,6 +155,10 @@ prob['cruise_analysis_group.cruise_propulsion_group.propeller_shaft_power_comp.v
 prob['cruise_analysis_group.cruise_propulsion_group.propeller_shaft_power_comp.motor_efficiency'] = .875
 prob['hover_analysis_group.hover_propulsion_group.propeller_shaft_power_comp.voltage'] = 16.
 prob['hover_analysis_group.hover_propulsion_group.propeller_shaft_power_comp.motor_efficiency'] = .875
+
+
+prob.model.list_outputs(prom_name=True)
+# prob.model.list_inputs(prom_name=True)
 
 print(prob['performance_analysis_group.range'])
 print(prob['cruise_analysis_group.cruise_aerodynamics_group.wing.sweep'])

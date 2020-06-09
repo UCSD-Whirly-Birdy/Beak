@@ -14,14 +14,13 @@ prob = Problem()
 
 global_ivc = IndepVarComp()
 
-# global_ivc.add_output('AR')
-# global_ivc.add_output('wing_area')
-# global_ivc.add_output('sweep')
-# global_ivc.add_output('alpha')
+global_ivc.add_output('AR')
+global_ivc.add_output('wing_area')
+global_ivc.add_output('sweep')
 global_ivc.add_output('cruise_propeller_angular_speed')
 # global_ivc.add_output('power_coefficient')
 global_ivc.add_output('hover_wing_angular_speed')
-# global_ivc.add_output('twist')
+global_ivc.add_output('twist')
 global_ivc.add_output('hover_propeller_angular_speed')
 global_ivc.add_output('current')
 prob.model.add_subsystem('global_inputs_comp', global_ivc, promotes=['*'])
@@ -100,17 +99,20 @@ prob.model.connect('hover_analysis_group.hover_propulsion_group.propeller_shaft_
 prob.model.connect('cruise_analysis_group.cruise_propulsion_group.propeller_shaft_power_comp.propeller_shaft_power','cruise_analysis_group.cruise_propulsion_group.shaft_power')
 prob.model.connect('hover_propeller_angular_speed', 'hover_analysis_group.hover_propulsion_group.rotational_rotor_group.angular_speed')
 
-# prob.model.connect('AR', ['cruise_analysis_group.cruise_aerodynamics_group.AR', 'hover_analysis_group.hover_aerodynamics_group.AR'])
-# prob.model.connect('wing_area', ['cruise_analysis_group.cruise_aerodynamics_group.area', 'hover_analysis_group.hover_aerodynamics_group.area'])
+prob.model.connect('AR', ['cruise_analysis_group.cruise_aerodynamics_group.AR', 'hover_analysis_group.hover_aerodynamics_group.AR'])
+prob.model.connect('wing_area', ['cruise_analysis_group.cruise_aerodynamics_group.area', 'hover_analysis_group.hover_aerodynamics_group.area'])
 # prob.model.connect('sweep', ['cruise_analysis_group.cruise_aerodynamics_group.wing.sweep', 'hover_analysis_group.hover_aerodynamics_group.wing.sweep'])
-# prob.model.connect('alpha', ['cruise_analysis_group.cruise_aerodynamics_group.aero_point.alpha', 'hover_analysis_group.hover_aerodynamics_group.aero_point.alpha'])
 # prob.model.connect('cruise_propeller_angular_speed', 'cruise_analysis_group.cruise_propulsion_group.angular_speed')
 # prob.model.connect('power_coefficient', 'cruise_analysis_group.cruise_propulsion_group.power_coeff')
+
 prob.model.connect('hover_wing_angular_speed', ['hover_analysis_group.hover_velocity_group.hover_wing_angular_speed', 'hover_analysis_group.hover_propulsion_group.vertical_rotor_group.angular_speed','hover_analysis_group.hover_propulsion_group.hover_wing_angular_speed'])
+
 # prob.model.connect('twist', ['cruise_analysis_group.cruise_aerodynamics_group.wing.twist_cp', 'hover_analysis_group.hover_aerodynamics_group.wing.twist_cp'])
 
 # prob.model.connect('hover_propeller_angular_speed', 'hover_analysis_group.hover_propulsion_group.rotational_rotor_group.angular_speed')
 # prob.model.connect('hover_propeller_angular_speed', 'hover_analysis_group.hover_propulsion_group.angular_speed')
+
+# prob.model.connect('sweep', ['cruise_analysis_group.cruise_aerodynamics_group.wing.sweep', 'hover_analysis_group.hover_aerodynamics_group.wing.sweep', 'hover_analysis_group.hover_propulsion_group.sweep', 'performance_analysis_group.sweep'])
 
 # MOTOR CURRENT/VOLTAGE/EFFICIENCY CONNECTIONS
 prob.model.connect('current', 'cruise_analysis_group.cruise_propulsion_group.propeller_shaft_power_comp.current')
@@ -125,11 +127,11 @@ prob.run_model()
 
 prob.model.list_inputs(prom_name=True)
 
-# prob['cruise_analysis_group.inputs_comp.altitude'] = 500.
-# prob['hover_analysis_group.inputs_comp.altitude'] = 100.
+prob['cruise_analysis_group.inputs_comp.altitude'] = 500.
+prob['hover_analysis_group.inputs_comp.altitude'] = 100.
 
-# prob['cruise_analysis_group.inputs_comp.speed'] = 50.
-# prob['hover_analysis_group.inputs_comp.speed'] = 1.
+prob['cruise_analysis_group.inputs_comp.speed'] = 50.
+prob['hover_analysis_group.inputs_comp.speed'] = 1.
 
 prob['cruise_analysis_group.cruise_propulsion_group.rotor_group.inputs_comp.radius_scalar'] = 0.127
 prob['hover_analysis_group.hover_propulsion_group.rotational_rotor_group.radius_scalar'] = 0.127
@@ -137,14 +139,16 @@ prob['hover_analysis_group.hover_propulsion_group.rotational_rotor_group.radius_
 
 # # Setup problem and add design variables, constraint, and objective
 # prob.model.add_design_var('cruise_analysis_group.cruise_aerodynamics_group.wing.twist_cp', lower=-20., upper=20.) # done
-# prob.model.add_design_var('cruise_analysis_group.cruise_aerodynamics_group.wing.sweep', lower=0., upper=60.) # done
-# prob.model.add_design_var('cruise_analysis_group.cruise_aerodynamics_group.AR', lower=4., upper=16.) # done
-# prob.model.add_design_var('cruise_analysis_group.cruise_aerodynamics_group.area', lower=0.05, upper=0.1) # done
-# prob.model.add_design_var('cruise_analysis_group.cruise_aerodynamics_group.alpha', lower=0., upper=10.) # done
-# prob.model.add_design_var('cruise_analysis_group.cruise_propulsion_group.power_coeff', lower=0., upper=1.) # done
-# # # prob.model.add_design_var('cruise_propeller_angular_speed', lower=0., upper=3000.) # done
-# # # prob.model.add_design_var('hover_propellor_angular_speed', lower=0., upper=3000.) # done
-# prob.model.add_design_var('hover_analysis_group.hover_velocity_group.hover_wing_angular_speed', lower = 800*np.pi/60, upper = 1200 * np.pi/60)
+# prob.model.add_design_var('sweep', lower=0., upper=60.) # done / need to fix connection to dv
+prob.model.add_design_var('AR', lower=4., upper=16.) # done
+prob.model.add_design_var('current', lower=0., upper=25.) # done
+prob.model.add_design_var('wing_area', lower=0.05, upper=0.1) # done
+prob.model.add_design_var('cruise_analysis_group.cruise_aerodynamics_group.alpha', lower=0., upper=10.) # done
+prob.model.add_design_var('hover_analysis_group.hover_aerodynamics_group.alpha', lower=0., upper=10.) # done
+# prob.model.add_design_var('cruise_analysis_group.cruise_propulsion_group.power_coeff', lower=0., upper=1.) # done / revisit dv
+prob.model.add_design_var('cruise_propeller_angular_speed', lower=0., upper=3000.) # done
+prob.model.add_design_var('hover_propellor_angular_speed', lower=0., upper=3000.) # done
+prob.model.add_design_var('hover_wing_angular_speed', lower = 800*np.pi/60, upper = 1200 * np.pi/60)
 
 # VOLTAGE/MOTOR EFFICIENCY VALUES
 prob['cruise_analysis_group.cruise_propulsion_group.propeller_shaft_power_comp.voltage'] = 16.

@@ -22,6 +22,7 @@ global_ivc.add_output('cruise_propeller_angular_speed')
 global_ivc.add_output('hover_wing_angular_speed')
 # global_ivc.add_output('twist')
 global_ivc.add_output('hover_propeller_angular_speed')
+global_ivc.add_output('current')
 prob.model.add_subsystem('global_inputs_comp', global_ivc, promotes=['*'])
 
 cruise_analysis_group = CruiseAnalysisGroup(
@@ -87,10 +88,11 @@ prob.model.connect('hover_analysis_group.hover_velocity_group.hover_wing_angular
 prob.model.connect('hover_analysis_group.hover_aerodynamics_group.aero_point.wing_perf.D','hover_analysis_group.hover_propulsion_group.drag')
 prob.model.connect('cruise_analysis_group.cruise_aerodynamics_group.wing.sweep','hover_analysis_group.hover_propulsion_group.sweep')
 prob.model.connect('hover_analysis_group.hover_propulsion_group.rotational_rotor_group.thrust','hover_analysis_group.hover_propulsion_group.thrust')
-prob.model.connect('hover_analysis_group.hover_propulsion_group.propeller_shaft_power','hover_analysis_group.hover_propulsion_group.rotational_rotor_group.shaft_power')
+prob.model.connect('hover_analysis_group.hover_propulsion_group.propeller_shaft_power_comp.propeller_shaft_power','hover_analysis_group.hover_propulsion_group.rotational_rotor_group.shaft_power')
 
 # prob.model.connect('cruise_analysis_group.cruise_propulsion_group.propeller_shaft_power.propeller_shaft_power_comp.propeller_shaft_power','cruise_analysis_group.cruise_propulsion_group.rotor_group.shaft_power')
-# prob.model.connect('cruise_analysis_group.cruise_propulsion_group.propeller_shaft_power','cruise_analysis_group.cruise_propulsion_group.rotor_group.shaft_power')
+# # prob.model.connect('cruise_analysis_group.cruise_propulsion_group.propeller_shaft_power','cruise_analysis_group.cruise_propulsion_group.rotor_group.shaft_power')
+prob.model.connect('cruise_analysis_group.cruise_propulsion_group.propeller_shaft_power_comp.propeller_shaft_power','cruise_analysis_group.cruise_propulsion_group.shaft_power')
 prob.model.connect('hover_propeller_angular_speed', 'hover_analysis_group.hover_propulsion_group.rotational_rotor_group.angular_speed')
 prob.model.connect('hover_wing_angular_speed', 'hover_analysis_group.hover_propulsion_group.vertical_rotor_group.angular_speed')
 prob.model.connect('hover_analysis_group.atmosphere_group.density', 'hover_analysis_group.hover_propulsion_group.vertical_rotor_group.density')
@@ -107,6 +109,14 @@ prob.model.connect('hover_analysis_group.inputs_comp.speed', 'hover_analysis_gro
 # prob.model.connect('twist', ['cruise_analysis_group.cruise_aerodynamics_group.wing.twist_cp', 'hover_analysis_group.hover_aerodynamics_group.wing.twist_cp'])
 # prob.model.connect('hover_propeller_angular_speed', 'hover_analysis_group.hover_propulsion_group.angular_speed')
 
+# MOTOR CURRENT/VOLTAGE/EFFICIENCY CONNECTIONS
+prob.model.connect('current', 'cruise_analysis_group.cruise_propulsion_group.propeller_shaft_power_comp.current')
+prob.model.connect('cruise_analysis_group.cruise_propulsion_group.voltage', 'cruise_analysis_group.cruise_propulsion_group.propeller_shaft_power_comp.voltage')
+prob.model.connect('cruise_analysis_group.cruise_propulsion_group.motor_efficiency', 'cruise_analysis_group.cruise_propulsion_group.propeller_shaft_power_comp.motor_efficiency')
+prob.model.connect('current', 'hover_analysis_group.hover_propulsion_group.propeller_shaft_power_comp.current')
+prob.model.connect('hover_analysis_group.hover_propulsion_group.voltage', 'hover_analysis_group.hover_propulsion_group.propeller_shaft_power_comp.voltage')
+prob.model.connect('hover_analysis_group.hover_propulsion_group.motor_efficiency', 'hover_analysis_group.hover_propulsion_group.propeller_shaft_power_comp.motor_efficiency')
+
 prob.setup()
 prob.run_model()
 
@@ -121,6 +131,7 @@ prob.model.list_inputs(prom_name=True)
 prob['cruise_analysis_group.cruise_propulsion_group.rotor_group.inputs_comp.radius_scalar'] = 0.127
 prob['hover_analysis_group.hover_propulsion_group.rotational_rotor_group.radius_scalar'] = 0.127
 
+
 # # Setup problem and add design variables, constraint, and objective
 # prob.model.add_design_var('cruise_analysis_group.cruise_aerodynamics_group.wing.twist_cp', lower=-20., upper=20.) # done
 # prob.model.add_design_var('cruise_analysis_group.cruise_aerodynamics_group.wing.sweep', lower=0., upper=60.) # done
@@ -130,6 +141,18 @@ prob['hover_analysis_group.hover_propulsion_group.rotational_rotor_group.radius_
 # prob.model.add_design_var('cruise_analysis_group.cruise_propulsion_group.power_coeff', lower=0., upper=1.) # done
 # # # prob.model.add_design_var('cruise_propeller_angular_speed', lower=0., upper=3000.) # done
 # # # prob.model.add_design_var('hover_propellor_angular_speed', lower=0., upper=3000.) # done
+
+# VOLTAGE/MOTOR EFFICIENCY VALUES
+prob['cruise_analysis_group.cruise_propulsion_group.propeller_shaft_power_comp.voltage'] = 16.
+prob['cruise_analysis_group.cruise_propulsion_group.propeller_shaft_power_comp.motor_efficiency'] = .875
+prob['hover_analysis_group.hover_propulsion_group.propeller_shaft_power_comp.voltage'] = 16.
+prob['hover_analysis_group.hover_propulsion_group.propeller_shaft_power_comp.motor_efficiency'] = .875
+
+# prob.model.list_outputs(prom_name=True)
+#prob.model.list_inputs(prom_name=True)
+
+print(prob['performance_analysis_group.range'])
+print(prob['cruise_analysis_group.cruise_aerodynamics_group.wing.sweep'])
 
 # prob.model.add_constraint('performance_analysis_group.vertical_cruise', lower=0.)
 # prob.model.add_constraint('performance_analysis_group.horizontal_cruise', lower=0.)
@@ -158,11 +181,6 @@ prob['hover_analysis_group.hover_propulsion_group.rotational_rotor_group.radius_
 
 # prob['cruise_analysis_group.inputs_comp.speed'] = 50.
 # prob['hover_analysis_group.inputs_comp.speed'] = 1.
-
-# prob['cruise_analysis_group.cruise_propulsion_group.rotor_group.inputs_comp.radius_scalar'] = 0.127
-# prob['hover_analysis_group.hover_propulsion_group.rotational_rotor_group.radius_scalar'] = 0.127
-
-# prob.run_driver()
 
 # print('Range:', prob['performance_analysis_group.range'])
 # print('Sweep Angle:', prob['cruise_analysis_group.cruise_aerodynamics_group.wing.sweep'])

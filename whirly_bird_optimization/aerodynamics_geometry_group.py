@@ -15,10 +15,10 @@ class AerodynamicsGeometryGroup(Group):
         shape = self.options['shape']
         # mode = self.options['mode']
 
-        comp = IndepVarComp()
-        comp.add_output('area', val = 0.05)
-        comp.add_output('AR', val = 10)
-        self.add_subsystem('inputs_comp', comp, promotes=['*'])
+        # comp = IndepVarComp()
+        # comp.add_output('area', val = 0.05)
+        # comp.add_output('AR', val = 10)
+        # self.add_subsystem('inputs_comp', comp, promotes=['*'])
 
         # b = sqrt(AR * S)
         comp = PowerCombinationComp(

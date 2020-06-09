@@ -9,6 +9,11 @@ class PropellerShaftPowerGroup(Group):
     def setup(self):
         shape = self.options['shape']
 
+        comp = IndepVarComp()
+        comp.add_output('motor_efficiency')
+        comp.add_output('voltage')
+        self.add_subsystem('inputs_comp', comp, promotes = ['*'])
+
         comp = PowerCombinationComp(
             shape = shape,
             out_name = 'propeller_shaft_power',
@@ -19,4 +24,4 @@ class PropellerShaftPowerGroup(Group):
                 current = 1.,
             )
         )
-        self.add_subsystem('propeller_shaft_power_comp', comp, promotes = ['*'])
+        self.add_subsystem('propeller_shaft_power_comp', comp)

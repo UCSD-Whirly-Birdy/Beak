@@ -8,8 +8,8 @@ class RangeGroup(Group):
         self.options.declare('shape', types = tuple)
         self.options.declare('g', default = 9.81)
         self.options.declare('EMD', default = 1.)
-        self.options.declare('W0', default = 1.)
-        self.options.declare('Wb', default = 1.)
+        self.options.declare('W0', default = 0.7*9.81)
+        self.options.declare('Wb', default = 0.14*9.81)
 
 
     def setup(self):

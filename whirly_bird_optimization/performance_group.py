@@ -1,4 +1,4 @@
-from openmdao.api import Group, IndepVarComp, Problem
+from openmdao.api import Group, IndepVarComp, Problem, ExecComp
 
 from whirly_bird_optimization.range_comp import RangeGroup
 from whirly_bird_optimization.force_balance_group import ForceBalanceGroup
@@ -14,9 +14,7 @@ class PerformanceGroup(Group):
     def setup(self):
         shape = self.options['shape']
 
-        comp = IndepVarComp()
-
-        comp.add_output('weight') # weight
+        comp = ExecComp('weight = total_mass * 9.81')
         self.add_subsystem('inputs_comp',comp,promotes=['*'])
 
         group = WeightsGroup(

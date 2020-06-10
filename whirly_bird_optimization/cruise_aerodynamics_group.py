@@ -15,6 +15,8 @@ from openaerostruct.aerodynamics.aero_groups import AeroPoint
 
 from .aerodynamics_geometry_group import AerodynamicsGeometryGroup
 
+# from Beak.run import surface, mesh, mesh_dict
+
 
 class CruiseAerodynamicsGroup(Group):
     def initialize(self):
@@ -22,22 +24,23 @@ class CruiseAerodynamicsGroup(Group):
 
     def setup(self):
         shape = self.options['shape']
-
-        indep_var_comp = om.IndepVarComp()
-        # indep_var_comp.add_output('v', val=50, units='m/s')
-        # indep_var_comp.add_output('Mach_number', val=0.3)
-        indep_var_comp.add_output('re', val=1.e5, units='1/m')
-        indep_var_comp.add_output('rho')
-        indep_var_comp.add_output('cg', val=np.zeros((3)), units='m')
-        indep_var_comp.add_output('alpha', val = 2.)
-        indep_var_comp.add_output('beta', val = 0.)
-        indep_var_comp.add_output('xshear', val = np.zeros((9)))
-        indep_var_comp.add_output('yshear', val = np.zeros((9)))
-        indep_var_comp.add_output('zshear', val = np.zeros((9)))
-
-        self.add_subsystem('inputs_comp', indep_var_comp, promotes=['*'])
+        
         shape = (1,)
         self.add_subsystem('aerodynamics_geometry_group', AerodynamicsGeometryGroup(shape=shape), promotes=['*'])
+
+        # indep_var_comp = om.IndepVarComp()
+        # indep_var_comp.add_output('v', val=50, units='m/s')
+        # indep_var_comp.add_output('Mach_number', val=0.3)
+        # indep_var_comp.add_output('re', val=1.e5, units='1/m')
+        # indep_var_comp.add_output('rho')
+        # indep_var_comp.add_output('cg', val=np.zeros((3)), units='m')
+        # indep_var_comp.add_output('alpha', val = 2.)
+        # indep_var_comp.add_output('beta', val = 0.)
+        # indep_var_comp.add_output('xshear', val = np.zeros((9)))
+        # indep_var_comp.add_output('yshear', val = np.zeros((9)))
+        # indep_var_comp.add_output('zshear', val = np.zeros((9)))
+
+        # self.add_subsystem('inputs_comp', indep_var_comp, promotes=['*'])
 
         mesh_dict = {'num_y' : 17,
                     'num_x' : 9,
@@ -78,12 +81,13 @@ class CruiseAerodynamicsGroup(Group):
         self.add_subsystem(point_name, aero_group)
 
         # Connect flow properties to the analysis point
+        # # make connections in run file
         #self.connect('v', point_name + '.v')
-        self.connect('alpha', point_name + '.alpha')
-        #self.connect('Mach_number', point_name + '.Mach_number')
-        self.connect('re', point_name + '.re')
-        #self.connect('rho', point_name + '.rho')
-        self.connect('cg', point_name + '.cg')
+        # self.connect('cruise_alpha', point_name + '.alpha') # made!
+        # #self.connect('Mach_number', point_name + '.Mach_number')
+        # self.connect('re', point_name + '.re')
+        # #self.connect('rho', point_name + '.rho')
+        # self.connect('cg', point_name + '.cg')
 
         # Connect the mesh from the geometry component to the analysis point
         self.connect('wing.mesh', 'aero_point.wing.def_mesh')

@@ -12,7 +12,7 @@ class VerticalShaftPower(Group):
         comp = ExecComp('thrust_torque_hover = thrust * wing_span', shape=shape)
         self.add_subsystem('thrust_torque_hover_comp', comp, promotes = ['*'])
 
-        comp = ExecComp('drag_torque_hover = drag * wing_span / cos(sweep*pi/180) * .75', shape=shape)
+        comp = ExecComp('drag_torque_hover = drag * radius * 1.5', shape=shape)
         self.add_subsystem('drag_torque_hover_comp', comp, promotes = ['*'])
 
         comp = LinearCombinationComp(

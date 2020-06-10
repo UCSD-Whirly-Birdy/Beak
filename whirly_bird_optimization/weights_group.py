@@ -8,12 +8,6 @@ class WeightsGroup(Group):
     def setup(self):
         shape = self.options['shape']
 
-        comp = IndepVarComp()
-        comp.add_output('total_mass')
-        comp.add_output('motor_mass') # maybe change body
-        comp.add_output('wing_weight_ratio') # weight of wing/total weight 
-        self.add_subsystem('inputs_comp', comp, promotes = ['*'])
-
         comp = ExecComp('motor_weight_ratio = motor_mass / total_mass', shape=shape) # need to define motor_mass and connect to mass in simple_motor_group
         self.add_subsystem('motor_weight_ratio_comp', comp, promotes = ['*'])
 

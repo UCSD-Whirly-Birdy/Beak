@@ -101,7 +101,7 @@ prob.model.connect('hover_analysis_group.hover_velocity_group.radius', 'hover_an
 prob.model.connect('hover_analysis_group.hover_propulsion_group.vertical_shaft_power','hover_analysis_group.hover_propulsion_group.vertical_rotor_group.shaft_power')
 # prob.model.connect('hover_analysis_group.hover_velocity_group.hover_wing_angular_speed','hover_analysis_group.hover_propulsion_group.hover_wing_angular_speed')
 prob.model.connect('hover_analysis_group.hover_aerodynamics_group.aero_point.wing_perf.D','hover_analysis_group.hover_propulsion_group.drag')
-prob.model.connect('cruise_analysis_group.cruise_aerodynamics_group.wing.sweep','hover_analysis_group.hover_propulsion_group.sweep')
+prob.model.connect('hover_analysis_group.hover_aerodynamics_group.wing.sweep','hover_analysis_group.hover_propulsion_group.sweep')
 prob.model.connect('hover_analysis_group.hover_propulsion_group.rotational_rotor_group.thrust','hover_analysis_group.hover_propulsion_group.thrust')
 
 prob.model.connect('hover_analysis_group.hover_propulsion_group.propeller_shaft_power_comp.propeller_shaft_power','hover_analysis_group.hover_propulsion_group.rotational_rotor_group.shaft_power')
@@ -145,8 +145,8 @@ prob.model.connect('cg','hover_analysis_group.hover_aerodynamics_group.aero_poin
 # CONNECTIONS INTO PERFORMANCE GROUP
 prob.model.connect('cruise_analysis_group.cruise_aerodynamics_group.wing.twist_cp','performance_analysis_group.cruise_twist')
 prob.model.connect('hover_analysis_group.hover_aerodynamics_group.wing.twist_cp','performance_analysis_group.hover_twist')
-# prob.model.connect('','')
-# prob.model.connect('','')
+prob.model.connect('cruise_analysis_group.cruise_aerodynamics_group.wing.sweep','performance_analysis_group.cruise_sweep')
+prob.model.connect('hover_analysis_group.hover_aerodynamics_group.wing.sweep','performance_analysis_group.hover_sweep')
 # prob.model.connect('','')
 # prob.model.connect('','')
 # prob.model.connect('','')
@@ -206,11 +206,11 @@ prob['cruise_analysis_group.cruise_propulsion_group.motor_efficiency'] = .875
 prob['hover_analysis_group.hover_propulsion_group.voltage'] = 16.
 prob['hover_analysis_group.hover_propulsion_group.motor_efficiency'] = .875
 
-# prob.run_model()
-prob.run_driver()
+prob.run_model()
+# prob.run_driver()
 
 # prob.model.list_outputs(prom_name=True)
-# prob.model.list_inputs(prom_name=True)
+prob.model.list_inputs(prom_name=True)
 
 print('Range:', prob['performance_analysis_group.range'])
 print('Sweep Angle:', prob['cruise_analysis_group.cruise_aerodynamics_group.wing.sweep'])

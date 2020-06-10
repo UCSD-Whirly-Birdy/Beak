@@ -11,12 +11,12 @@ class StabilityGroup(Group):
     def setup(self):
         shape = self.options['shape']
 
-        comp = IndepVarComp()
-        # comp.add_output('sweep')
-        comp.add_output('body_weight_ratio') # weight of wing/total weight
-        comp.add_output('wing_weight_ratio') # weight of wing/total weight
-        comp.add_output('motor_weight_ratio') # weight of wing/total weight
-        self.add_subsystem('inputs_comp',comp, promotes = ['*'])
+        # comp = IndepVarComp()
+        # # comp.add_output('sweep')
+        # comp.add_output('body_weight_ratio') # weight of wing/total weight
+        # comp.add_output('wing_to_total_weight_ratio') # weight of wing/total weight
+        # comp.add_output('motor_weight_ratio') # weight of wing/total weight
+        # self.add_subsystem('inputs_comp',comp, promotes = ['*'])
 
         comp = ExecComp('neutral_point = (chord + wing_span*tan(sweep*pi/180))/4', shape=shape)
         self.add_subsystem('neutral_point_comp', comp, promotes = ['*'])

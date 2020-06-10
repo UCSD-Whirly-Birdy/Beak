@@ -16,7 +16,6 @@ from openaerostruct.aerodynamics.aero_groups import AeroPoint
 from .aerodynamics_geometry_group import AerodynamicsGeometryGroup
 from .hover_velocity_group import HoverVelocityGroup
 
-
 class HoverAerodynamicsGroup(Group):
     def initialize(self):
         self.options.declare('shape',types=tuple)
@@ -43,6 +42,7 @@ class HoverAerodynamicsGroup(Group):
 
         # self.add_subsystem('inputs_comp', indep_var_comp, promotes=['*'])
         shape = (1,)
+
         self.add_subsystem('aerodynamics_geometry_group', AerodynamicsGeometryGroup(shape=shape), promotes=['*'])
 
         mesh_dict = {'num_y' : 17,
@@ -79,6 +79,8 @@ class HoverAerodynamicsGroup(Group):
         geom_group = Geometry(surface=surface)
 
         self.add_subsystem(surface['name'], geom_group)
+
+        self.add_subsystem('hover_velocity_group', HoverVelocityGroup(shape=shape), promotes=['*'])
 
         aero_group = AeroPoint(surfaces=[surface])
         point_name = 'aero_point'

@@ -4,7 +4,7 @@ from whirly_bird_optimization.range_comp import RangeGroup
 from whirly_bird_optimization.force_balance_group import ForceBalanceGroup
 from whirly_bird_optimization.stability_group import StabilityGroup
 from whirly_bird_optimization.equal_geometry_group import EqualGeometryGroup
-
+from whirly_bird_optimization.weights_group import WeightsGroup
 
 class PerformanceGroup(Group):
 
@@ -18,6 +18,11 @@ class PerformanceGroup(Group):
 
         comp.add_output('weight') # weight
         self.add_subsystem('inputs_comp',comp,promotes=['*'])
+
+        group = WeightsGroup(
+            shape=shape,
+        )
+        self.add_subsystem('weights_group',group, promotes = ['*'])
 
         group = EqualGeometryGroup(
             shape=shape,

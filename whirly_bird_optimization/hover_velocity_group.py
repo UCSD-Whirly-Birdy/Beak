@@ -45,10 +45,11 @@ class HoverVelocityGroup(Group):
         # hover velocity below
 
         # V = 2pi*RPM/60*.75*radius or V = 2pi*RPM/60*.75* b/2/(cos(sweep))
+        # V = omega * r
 
         comp = PowerCombinationComp(
             shape=shape,
-            coeff = 1 / 60. * .75,
+            coeff = .75,
             out_name='hover_drag_velocity',
             powers_dict=dict(
                 hover_wing_angular_speed = 1.,
@@ -59,11 +60,11 @@ class HoverVelocityGroup(Group):
 
         comp = PowerCombinationComp(
             shape=shape,
-            coeff = 1 / 60.,
+            coeff = .5,
             out_name='hover_torque_velocity',
             powers_dict=dict(
                 hover_wing_angular_speed = 1.,
-                radius = 1.,
+                wing_span = 1.,
             )
         )
         self.add_subsystem('hover_torque_velocity_comp',comp,promotes=['*'])

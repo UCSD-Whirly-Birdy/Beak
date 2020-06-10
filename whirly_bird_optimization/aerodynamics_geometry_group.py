@@ -1,5 +1,8 @@
-from openmdao.api import Group, IndepVarComp, Problem
+from openmdao.api import Group, IndepVarComp, Problem, ExecComp
 from lsdo_utils.api import PowerCombinationComp, ScalarExpansionComp
+
+from openaerostruct.geometry.utils import generate_mesh, scale_x
+from openaerostruct.geometry.geometry_group import Geometry
 
 import numpy as np
 
@@ -16,10 +19,10 @@ class AerodynamicsGeometryGroup(Group):
         # mode = self.options['mode']
 
         # comp = IndepVarComp()
-        # comp.add_output('area', val = 0.05)
+        # comp.add_input('area', val = 0.05)
         # comp.add_output('AR', val = 10)
         # self.add_subsystem('inputs_comp', comp, promotes=['*'])
-
+        
         # b = sqrt(AR * S)
         comp = PowerCombinationComp(
             shape=shape,

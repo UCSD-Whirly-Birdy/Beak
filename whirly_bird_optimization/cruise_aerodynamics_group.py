@@ -58,7 +58,7 @@ class CruiseAerodynamicsGroup(Group):
         surface = { 'name' : 'wing', 
                     'symmetry' : True,
                     'S_ref_type' : 'wetted',
-                    'twist_cp' : np.zeros(3),
+                    'twist_cp' : np.array([-10., -3., 2.]),
                     'mesh' : mesh,
                     'CL0' : 0.0,
                     'CD0' : 0.001,
@@ -67,7 +67,7 @@ class CruiseAerodynamicsGroup(Group):
                     'c_max_t' : 0.1,
                     'with_viscous' : True,
                     'with_wave' : False,
-                    'sweep' : 0.,
+                    'sweep' : 6.,
                     'taper' : 0.,
                     'dihedral' : 0.,
                     }

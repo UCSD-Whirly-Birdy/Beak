@@ -1,0 +1,11 @@
+run_file_name = 'run_with_viz.py'
+viz_file_name = 'viz.py'
+data_dir = '_data' # directory where data gets saved
+data_file_name = 'opt'
+frames_dir = '_frames' # where each frame of video gets saved
+fps = 30 
+stride = 1 # jump change in pictures
+savefig_dpi = 250 # resolution of pictures
+print_opt_variables = True
+print_nonlinear_status = False
+print_linear_status = False

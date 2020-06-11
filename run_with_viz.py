@@ -171,9 +171,9 @@ prob.model.add_design_var('hover_propeller_angular_speed', lower=0., upper=3000.
 # prob.model.add_design_var('hover_wing_angular_speed', lower = 800*np.pi/60, upper = 1200 * np.pi/60)
 prob.model.add_design_var('hover_wing_angular_speed', lower = 40., upper = 65.)
 
-prob.model.add_constraint('performance_analysis_group.vertical_cruise', lower=0., scaler = 1e3) 
+prob.model.add_constraint('performance_analysis_group.vertical_cruise', lower=0., scaler = 1e3)  #, scaler = 1e3
 prob.model.add_constraint('performance_analysis_group.horizontal_cruise', lower=0.)
-prob.model.add_constraint('performance_analysis_group.static_margin', lower=0., upper=1., scaler = 1e-4)
+prob.model.add_constraint('performance_analysis_group.static_margin', lower=0., upper=1., scaler = 1e-2) #, scaler = 1e-4
 prob.model.add_constraint('performance_analysis_group.rotational_hover', lower=0.)
 prob.model.add_constraint('performance_analysis_group.vertical_hover', lower=0.)
 prob.model.add_constraint('cruise_analysis_group.cruise_aerodynamics_group.wing_span', lower = 0.5, upper=1.2)
@@ -184,8 +184,8 @@ prob.model.add_objective('performance_analysis_group.range', scaler=-1e2)
 
 prob.driver = om.ScipyOptimizeDriver()
 prob.driver.options['optimizer'] = 'COBYLA' # ‘COBYLA’, ‘SLSQP’
-prob.driver.options['tol'] = 1e-6 # or 1e-9
-prob.driver.opt_settings['maxiter'] = 10000
+prob.driver.options['tol'] = 1e-2 # or 1e-9
+prob.driver.opt_settings['maxiter'] = 12
 prob.driver.options['disp'] = True
 
 # recorder = om.SqliteRecorder("aero_wb.db")

@@ -53,7 +53,7 @@ class HoverPropulsionGroup(Group):
 
         simple_rotor_2 = SimpleRotor(
             name='glauert_model',
-            integrated_design_lift_coeff=0.3, 
+            integrated_design_lift_coeff=0.5, 
             blade_solidity=0.15, 
             )
         group = ModifiedSimpleRotorGroup(

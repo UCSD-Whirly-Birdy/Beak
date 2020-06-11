@@ -1,7 +1,9 @@
 import numpy as np
 import openmdao.api as om
 
-from openmdao.api import Problem, Group, IndepVarComp
+from openmdao.api import Group, IndepVarComp # removed problem and import from lsdo_viz.api
+
+from lsdo_viz.api import Problem
 
 from whirly_bird_optimization.cruise_analysis_group import CruiseAnalysisGroup
 from whirly_bird_optimization.hover_analysis_group import HoverAnalysisGroup
@@ -208,34 +210,38 @@ prob['cruise_analysis_group.cruise_propulsion_group.motor_efficiency'] = .875
 prob['hover_analysis_group.hover_propulsion_group.voltage'] = 16.
 prob['hover_analysis_group.hover_propulsion_group.motor_efficiency'] = .875
 
-prob.run_model()
-prob.run_driver()
+# prob.run_model()
+# prob.run_driver()
+prob.run() # replaced run_driver & run_model with run from lsdo_viz; use terminal to control
 
 # prob.model.list_outputs(prom_name=True)
 # prob.model.list_inputs(prom_name=True)
 
-print('Range:', prob['performance_analysis_group.range'])
-print('Cruise Sweep Angle:', prob['cruise_analysis_group.cruise_aerodynamics_group.wing.sweep'])
-print('Cruise Twist Angle:', prob['cruise_analysis_group.cruise_aerodynamics_group.wing.twist_cp'])
-print('Hover Sweep Angle:', prob['hover_analysis_group.hover_aerodynamics_group.wing.sweep'])
-print('Hover Twist Angle:', prob['hover_analysis_group.hover_aerodynamics_group.wing.twist_cp'])
-print('Aspect Ratio:', prob['AR'])
-print('Wing Area:', prob['wing_area'])
-print('Wing Span:', prob['cruise_analysis_group.cruise_aerodynamics_group.wing_span'])
-print('Current:', prob['current'])
-print('Cruise Propeller Angular Speed:', prob['cruise_propeller_angular_speed'])
-print('Hover Propeller Angular Speed:', prob['hover_propeller_angular_speed'])
-print('Hover Wing Angular Speed:', prob['hover_wing_angular_speed'])
-print('Cruise Alpha:', prob['cruise_alpha'])
-print('Hover Alpha:', prob['hover_alpha'])
-print('Vertical Cruise:', prob['performance_analysis_group.vertical_cruise'])
-print('Horizontal Cruise:', prob['performance_analysis_group.horizontal_cruise'])
-print('Static Margin:', prob['performance_analysis_group.static_margin'])
-print('Rotational Hover:', prob['performance_analysis_group.rotational_hover'])
-print('Vertical Hover:', prob['performance_analysis_group.vertical_hover'])
+# print('Range:', prob['performance_analysis_group.range'])
+# print('Cruise Sweep Angle:', prob['cruise_analysis_group.cruise_aerodynamics_group.wing.sweep'])
+# print('Cruise Twist Angle:', prob['cruise_analysis_group.cruise_aerodynamics_group.wing.twist_cp'])
+# print('Hover Sweep Angle:', prob['hover_analysis_group.hover_aerodynamics_group.wing.sweep'])
+# print('Hover Twist Angle:', prob['hover_analysis_group.hover_aerodynamics_group.wing.twist_cp'])
+# print('Aspect Ratio:', prob['AR'])
+# print('Wing Area:', prob['wing_area'])
+# print('Wing Span:', prob['cruise_analysis_group.cruise_aerodynamics_group.wing_span'])
+# print('Current:', prob['current'])
+# print('Cruise Propeller Angular Speed:', prob['cruise_propeller_angular_speed'])
+# print('Hover Propeller Angular Speed:', prob['hover_propeller_angular_speed'])
+# print('Hover Wing Angular Speed:', prob['hover_wing_angular_speed'])
+# print('Cruise Alpha:', prob['cruise_alpha'])
+# print('Hover Alpha:', prob['hover_alpha'])
+# print('Vertical Cruise:', prob['performance_analysis_group.vertical_cruise'])
+# print('Horizontal Cruise:', prob['performance_analysis_group.horizontal_cruise'])
+# print('Static Margin:', prob['performance_analysis_group.static_margin'])
+# print('Rotational Hover:', prob['performance_analysis_group.rotational_hover'])
+# print('Vertical Hover:', prob['performance_analysis_group.vertical_hover'])
 
 # plot_wing aero_wb.db to plot wing over iterations
 # plot_wingbox aero_wb.db of CS of airfoil (but produces error, yet to fix)
 
 # print(prob['cruise_analysis_group.cruise_aerodynamics_group.wing.twist'])
 # print(prob['cruise_analysis_group.cruise_aerodynamics_group.wing.twist_cp'])
+
+# to run in terminal, type lm -r to run, lm -o for optimization
+# type lm --help for full list of command line options

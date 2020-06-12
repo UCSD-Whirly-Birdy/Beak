@@ -33,7 +33,7 @@ class Viz(BaseViz):
         data_dict_list[ind]['cruise_analysis_group.cruise_aerodynamics_group.wing.sweep'] 
         data_dict_list[ind]['AR']
         data_dict_list[ind]['wing_area']
-        data_dict_list[ind]['wing_span']
+        data_dict_list[ind]['cruise_analysis_group.cruise_aerodynamics_group.wing_span']
         data_dict_list[ind]['cruise_analysis_group.cruise_aerodynamics_group.wing_chord']
         data_dict_list[ind]['cruise_alpha']
         data_dict_list[ind]['hover_alpha']
@@ -78,14 +78,14 @@ class Viz(BaseViz):
         with self.get_frame(1)[0, 1] as ax:
             x = np.arange(ind)
             y = [
-                data_dict_list[k]['wing_span'][0]
+                data_dict_list[k]['cruise_analysis_group.cruise_aerodynamics_group.wing_span'][0]
                 for k in range(ind)
             ]
             ax.plot(x, y)
             if video:
                 ax.set_xlim([0, len(data_dict_list)])
                 ax.set_ylim(self.get_limits(
-                    'wing_span', lower_margin=0.1, upper_margin=0.1, mode=mode,
+                    'cruise_analysis_group.cruise_aerodynamics_group.wing_span', lower_margin=0.1, upper_margin=0.1, mode=mode,
                 ))
             ax.set_xlabel('Iteration')
             ax.set_ylabel('Wing Span (m)')
@@ -107,7 +107,7 @@ class Viz(BaseViz):
             ax.set_ylabel('Chord (m)')
 
         # SWEEP
-        with self.get_frame(1)[1, 1] as ax:
+        with self.get_frame(1)[0, 2] as ax:
             x = np.arange(ind)
             y = [
                 data_dict_list[k]['cruise_analysis_group.cruise_aerodynamics_group.wing.sweep'][0]
@@ -123,7 +123,7 @@ class Viz(BaseViz):
             ax.set_ylabel('Sweep (deg)')
             
         # CRUISE & HOVER ANGLE OF ATTACK
-        with self.get_frame(1)[1, 1] as ax:
+        with self.get_frame(1)[1, 2] as ax:
             x = np.arange(ind)
             y = [
                 (data_dict_list[k]['cruise_alpha'][0], data_dict_list[k]['hover_alpha'][0])
@@ -139,7 +139,7 @@ class Viz(BaseViz):
             ax.set_ylabel('Chord (m)')
 
         # VERTICAL CRUISE CONSTRAINT
-        with self.get_frame(1)[1, 1] as ax:
+        with self.get_frame(1)[0, 3] as ax:
             x = np.arange(ind)
             y = [
                 data_dict_list[k]['performance_analysis_group.vertical_cruise'][0]
@@ -155,7 +155,7 @@ class Viz(BaseViz):
             ax.set_ylabel('Cruise Vertical Net Force (N)')
         
         # STATIC MARGIN
-        with self.get_frame(1)[1, 1] as ax:
+        with self.get_frame(1)[1, 3] as ax:
             x = np.arange(ind)
             y = [
                 data_dict_list[k]['performance_analysis_group.static_margin'][0]
@@ -171,22 +171,22 @@ class Viz(BaseViz):
             ax.set_ylabel('Static Margin')
         
 
-        with self.get_frame(1)[1, 1] as ax:
-            x = [
-                data_dict_list[ind]['CD'][0]
-            ]
-            y = [
-                data_dict_list[ind]['CL'][0]
-            ]
-            ax.plot(x, y, 'o')
-            if video:
-                ax.set_xlim(self.get_limits(
-                    'CD', lower_margin=0.1, upper_margin=0.1, mode=mode,
-                ))
-                ax.set_ylim(self.get_limits(
-                    'CL', lower_margin=0.1, upper_margin=0.1, mode=mode,
-                ))
-            ax.set_xlabel('CD')
-            ax.set_ylabel('CL')
+        # with self.get_frame(1)[1, 1] as ax:
+        #     x = [
+        #         data_dict_list[ind]['CD'][0]
+        #     ]
+        #     y = [
+        #         data_dict_list[ind]['CL'][0]
+        #     ]
+        #     ax.plot(x, y, 'o')
+        #     if video:
+        #         ax.set_xlim(self.get_limits(
+        #             'CD', lower_margin=0.1, upper_margin=0.1, mode=mode,
+        #         ))
+        #         ax.set_ylim(self.get_limits(
+        #             'CL', lower_margin=0.1, upper_margin=0.1, mode=mode,
+        #         ))
+        #     ax.set_xlabel('CD')
+        #     ax.set_ylabel('CL')
 
         self.get_frame(1).write()

@@ -107,7 +107,7 @@ class Viz(BaseViz):
             ax.set_ylabel('Chord (m)')
 
         # SWEEP
-        with self.get_frame(1)[1, 1] as ax:
+        with self.get_frame(1)[0, 2] as ax:
             x = np.arange(ind)
             y = [
                 data_dict_list[k]['cruise_analysis_group.cruise_aerodynamics_group.wing.sweep'][0]
@@ -123,7 +123,7 @@ class Viz(BaseViz):
             ax.set_ylabel('Sweep (deg)')
             
         # CRUISE & HOVER ANGLE OF ATTACK
-        with self.get_frame(1)[1, 1] as ax:
+        with self.get_frame(1)[1, 2] as ax:
             x = np.arange(ind)
             y = [
                 (data_dict_list[k]['cruise_alpha'][0], data_dict_list[k]['hover_alpha'][0])
@@ -139,7 +139,7 @@ class Viz(BaseViz):
             ax.set_ylabel('Chord (m)')
 
         # VERTICAL CRUISE CONSTRAINT
-        with self.get_frame(1)[1, 1] as ax:
+        with self.get_frame(1)[0, 3] as ax:
             x = np.arange(ind)
             y = [
                 data_dict_list[k]['performance_analysis_group.vertical_cruise'][0]
@@ -155,7 +155,7 @@ class Viz(BaseViz):
             ax.set_ylabel('Cruise Vertical Net Force (N)')
         
         # STATIC MARGIN
-        with self.get_frame(1)[1, 1] as ax:
+        with self.get_frame(1)[1, 3] as ax:
             x = np.arange(ind)
             y = [
                 data_dict_list[k]['performance_analysis_group.static_margin'][0]

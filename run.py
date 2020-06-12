@@ -20,7 +20,7 @@ global_ivc.add_output('beta', val = 0.)
 global_ivc.add_output('xshear', val = np.zeros((9)))
 global_ivc.add_output('yshear', val = np.zeros((9)))
 global_ivc.add_output('zshear', val = np.zeros((9)))
-global_ivc.add_output('AR', val = 9.)
+global_ivc.add_output('AR', val = 7.)
 global_ivc.add_output('wing_area', val = 0.08)
 global_ivc.add_output('current', val = 10.)
 global_ivc.add_output('total_mass', val = .7, units='kg')
@@ -162,14 +162,14 @@ prob.model.add_design_var('hover_analysis_group.hover_aerodynamics_group.wing.sw
 prob.model.add_design_var('AR', lower=4., upper=16.) # done
 prob.model.add_design_var('current', lower=0., upper=25.) # done
 prob.model.add_design_var('wing_area', lower=0.05, upper=0.1) # done
-prob.model.add_design_var('cruise_alpha', lower=0., upper=10.) # done
+prob.model.add_design_var('cruise_alpha', lower=0., upper=7.) # done
 prob.model.add_design_var('hover_alpha', lower=0., upper=10.) # done
 prob.model.add_design_var('cruise_propeller_angular_speed', lower=0., upper=3000., scaler = 1e3) # done , scaler = 1e-1
 prob.model.add_design_var('hover_propeller_angular_speed', lower=0., upper=3000., scaler = 1e3) # done
 # prob.model.add_design_var('hover_wing_angular_speed', lower = 800*np.pi/60, upper = 1200 * np.pi/60)
 prob.model.add_design_var('hover_wing_angular_speed', lower = 40., upper = 65.)
 
-prob.model.add_constraint('performance_analysis_group.vertical_cruise', lower=0., scaler = 1e3) 
+prob.model.add_constraint('performance_analysis_group.vertical_cruise', lower=0., upper = 5., scaler = 1e3) 
 prob.model.add_constraint('performance_analysis_group.horizontal_cruise', lower=0.)
 prob.model.add_constraint('performance_analysis_group.static_margin', lower=0., upper=1., scaler = 1e-2)
 prob.model.add_constraint('performance_analysis_group.rotational_hover', lower=0.)
@@ -178,7 +178,7 @@ prob.model.add_constraint('cruise_analysis_group.cruise_aerodynamics_group.wing_
 prob.model.add_constraint('performance_analysis_group.twist_equality', lower = np.zeros(3), upper = np.zeros(3))
 prob.model.add_constraint('performance_analysis_group.sweep_equality', lower = 0, upper = 1e-3)
 
-prob.model.add_objective('performance_analysis_group.range', scaler=-1e2)
+prob.model.add_objective('performance_analysis_group.range', scaler=-1e-5)
 
 prob.driver = om.ScipyOptimizeDriver()
 prob.driver.options['optimizer'] = 'COBYLA' # ‘COBYLA’, ‘SLSQP’
@@ -196,7 +196,7 @@ prob.setup()
 prob['cruise_analysis_group.inputs_comp.altitude'] = 500.
 prob['hover_analysis_group.inputs_comp.altitude'] = 100.
 
-prob['cruise_analysis_group.inputs_comp.speed'] = 50.
+prob['cruise_analysis_group.inputs_comp.speed'] = 20.
 prob['hover_analysis_group.inputs_comp.speed'] = 1.
 
 prob['cruise_analysis_group.cruise_propulsion_group.rotor_group.inputs_comp.radius_scalar'] = 0.0635
@@ -209,9 +209,9 @@ prob['hover_analysis_group.hover_propulsion_group.voltage'] = 16.
 prob['hover_analysis_group.hover_propulsion_group.motor_efficiency'] = .875
 
 prob.run_model()
-prob.run_driver()
+# prob.run_driver()
 
-# prob.model.list_outputs(prom_name=True)
+prob.model.list_outputs(prom_name=True)
 # prob.model.list_inputs(prom_name=True)
 
 print('Range:', prob['performance_analysis_group.range'])
@@ -233,6 +233,10 @@ print('Horizontal Cruise:', prob['performance_analysis_group.horizontal_cruise']
 print('Static Margin:', prob['performance_analysis_group.static_margin'])
 print('Rotational Hover:', prob['performance_analysis_group.rotational_hover'])
 print('Vertical Hover:', prob['performance_analysis_group.vertical_hover'])
+
+print('-----------------------------')
+print('Efficiency:', prob['performance_analysis_group.efficiency'])
+print('Lift-To-Drag Ratio', prob['performance_analysis_group.L_D'])
 
 # plot_wing aero_wb.db to plot wing over iterations
 # plot_wingbox aero_wb.db of CS of airfoil (but produces error, yet to fix)

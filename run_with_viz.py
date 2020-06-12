@@ -184,8 +184,8 @@ prob.model.add_objective('performance_analysis_group.range', scaler=-1e2)
 
 prob.driver = om.ScipyOptimizeDriver()
 prob.driver.options['optimizer'] = 'COBYLA' # ‘COBYLA’, ‘SLSQP’
-prob.driver.options['tol'] = 1e-2 # or 1e-9
-prob.driver.opt_settings['maxiter'] = 12
+prob.driver.options['tol'] = 1e-3 # or 1e-9
+prob.driver.opt_settings['maxiter'] = 10000
 prob.driver.options['disp'] = True
 
 # recorder = om.SqliteRecorder("aero_wb.db")
@@ -210,7 +210,7 @@ prob['cruise_analysis_group.cruise_propulsion_group.motor_efficiency'] = .875
 prob['hover_analysis_group.hover_propulsion_group.voltage'] = 16.
 prob['hover_analysis_group.hover_propulsion_group.motor_efficiency'] = .875
 
-# prob.run_model()
+prob.run_model()
 # prob.run_driver()
 prob.run() # replaced run_driver & run_model with run from lsdo_viz; use terminal to control
 

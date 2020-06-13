@@ -21,9 +21,9 @@ class Viz(BaseViz):
         self.frame_name_format = 'output_{}'
 
         self.add_frame(Frame(
-            height_in=8., width_in=18., # originally width_in = 12
+            height_in=8., width_in=16., # originally width_in = 12
             nrows=3, ncols=3,
-            wspace=0.5, hspace=0.5, # space between each graph
+            wspace=0.35, hspace=0.5, # space between each graph
         ), 1)
 
     def plot(self, data_dict_list, ind, video=False):

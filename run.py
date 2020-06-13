@@ -208,10 +208,10 @@ prob['cruise_analysis_group.cruise_propulsion_group.motor_efficiency'] = .875
 prob['hover_analysis_group.hover_propulsion_group.voltage'] = 16.
 prob['hover_analysis_group.hover_propulsion_group.motor_efficiency'] = .875
 
-prob.run_model()
-# prob.run_driver()
+# prob.run_model()
+prob.run_driver()
 
-prob.model.list_outputs(prom_name=True)
+# prob.model.list_outputs(prom_name=True)
 # prob.model.list_inputs(prom_name=True)
 
 print('Range:', prob['performance_analysis_group.range'])
